@@ -57,7 +57,7 @@ namespace KinectImageConvertSender
             //Kinectの設定情報に基づいてBitmap関連情報を初期化
             InitBitmap();
 
-   /*         //IPv4のアドレスを取得して表示
+            //IPv4のアドレスを取得して表示
             IPHostEntry ipHostEntry = Dns.GetHostEntry(Dns.GetHostName());
 
             foreach (IPAddress ip in ipHostEntry.AddressList)
@@ -65,10 +65,10 @@ namespace KinectImageConvertSender
                 if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                 {
                     //mLocalIPAddress.text = ip.ToString();
-                    _ipAdressText = ip.ToString();
+                    PCViewIpAdress.Text = ip.ToString();
                     break;
                 }
-            }*/
+            }
 
             //(追加)初期化が終わったのでデータ取得開始
             Task t = KinectLoop();
@@ -249,10 +249,12 @@ namespace KinectImageConvertSender
         //UPDの接続を開始する
         private void UDPConectStart_Click(object sender, EventArgs e)
         {
-            ViewIpAdress.Text = _ipAdressText.ToString();
-            ViewPort.Text = _port.ToString();
+            _ipAdressText = GetConnectIP.Text;
+            ConnectViewIpAdress.Text = _ipAdressText.ToString();
+            ConnectViewPort.Text = _port.ToString();
             UDPSender = new UDPSender(_ipAdressText,_port);
             _isUDPSend = true;
         }
+
     }
 }
