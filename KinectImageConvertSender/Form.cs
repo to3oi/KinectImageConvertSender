@@ -11,6 +11,7 @@ using PixelFormat = System.Drawing.Imaging.PixelFormat;
 using OpenCvSharp;
 using UnityEasyNet;
 using System.Net;
+using OpenCvSharp.Extensions;
 
 
 namespace KinectImageConvertSender
@@ -88,7 +89,7 @@ namespace KinectImageConvertSender
 
                     UpdateIrBitmap(capture);
                     //チェック用
-                    irBitmapBOX.Image = irBitmap;
+                    irBitmapBox.Image = irBitmap;
 
 
                     //以下マスク処理
@@ -123,15 +124,18 @@ namespace KinectImageConvertSender
                     Mat outDst = new Mat();
                     Cv2.BitwiseAnd(tempDepthMatBit, tempDepthMatBit, outDst, tempIrMatBit);
 
-
+                    resultBitmapBox.Image = BitmapConverter.ToBitmap(outDst);
+                    //最終結果はoutDst
+                    Console.WriteLine(outDst.Type());
                     //変換チェック
                     //エンコード
                     ImageEncodingParam encodingParam = new ImageEncodingParam(ImwriteFlags.PngBilevel, 0);
                     var buffer = new byte[outDst.Rows * outDst.Cols * outDst.Channels()];
                     Cv2.ImEncode(".png", outDst, out buffer, encodingParam);
 
+
                     //デコード
-                    Mat res = Cv2.ImDecode(buffer, ImreadModes.Color);
+                    Mat res = Cv2.ImDecode(buffer, ImreadModes.AnyColor);
                     //ここでbufferをUDPで送信すればよき
                     if (_isUDPSend)
                     {
@@ -255,6 +259,5 @@ namespace KinectImageConvertSender
             UDPSender = new UDPSender(_ipAdressText,_port);
             _isUDPSend = true;
         }
-
     }
 }

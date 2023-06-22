@@ -30,7 +30,7 @@ namespace KinectImageConvertSender
         private void InitializeComponent()
         {
             this.depthBitmapBox = new System.Windows.Forms.PictureBox();
-            this.irBitmapBOX = new System.Windows.Forms.PictureBox();
+            this.irBitmapBox = new System.Windows.Forms.PictureBox();
             this.Depth_Label = new System.Windows.Forms.Label();
             this.IR_Label = new System.Windows.Forms.Label();
             this.UDPConectStart = new System.Windows.Forms.Button();
@@ -46,8 +46,11 @@ namespace KinectImageConvertSender
             this.PCViewIpAdress = new System.Windows.Forms.Label();
             this.GetConnectIP = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.resultBitmapBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.depthBitmapBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.irBitmapBOX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.irBitmapBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.resultBitmapBox)).BeginInit();
             this.SuspendLayout();
             // 
             // depthBitmapBox
@@ -59,14 +62,14 @@ namespace KinectImageConvertSender
             this.depthBitmapBox.TabIndex = 0;
             this.depthBitmapBox.TabStop = false;
             // 
-            // irBitmapBOX
+            // irBitmapBox
             // 
-            this.irBitmapBOX.Location = new System.Drawing.Point(339, 27);
-            this.irBitmapBOX.Name = "irBitmapBOX";
-            this.irBitmapBOX.Size = new System.Drawing.Size(300, 300);
-            this.irBitmapBOX.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.irBitmapBOX.TabIndex = 1;
-            this.irBitmapBOX.TabStop = false;
+            this.irBitmapBox.Location = new System.Drawing.Point(339, 27);
+            this.irBitmapBox.Name = "irBitmapBox";
+            this.irBitmapBox.Size = new System.Drawing.Size(300, 300);
+            this.irBitmapBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.irBitmapBox.TabIndex = 1;
+            this.irBitmapBox.TabStop = false;
             // 
             // Depth_Label
             // 
@@ -88,7 +91,7 @@ namespace KinectImageConvertSender
             // 
             // UDPConectStart
             // 
-            this.UDPConectStart.Location = new System.Drawing.Point(662, 233);
+            this.UDPConectStart.Location = new System.Drawing.Point(342, 573);
             this.UDPConectStart.Name = "UDPConectStart";
             this.UDPConectStart.Size = new System.Drawing.Size(75, 23);
             this.UDPConectStart.TabIndex = 4;
@@ -99,7 +102,7 @@ namespace KinectImageConvertSender
             // ConnectViewIpAdress
             // 
             this.ConnectViewIpAdress.AutoSize = true;
-            this.ConnectViewIpAdress.Location = new System.Drawing.Point(694, 298);
+            this.ConnectViewIpAdress.Location = new System.Drawing.Point(374, 638);
             this.ConnectViewIpAdress.Name = "ConnectViewIpAdress";
             this.ConnectViewIpAdress.Size = new System.Drawing.Size(117, 12);
             this.ConnectViewIpAdress.TabIndex = 5;
@@ -108,7 +111,7 @@ namespace KinectImageConvertSender
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(662, 261);
+            this.label1.Location = new System.Drawing.Point(342, 601);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(66, 12);
             this.label1.TabIndex = 6;
@@ -117,7 +120,7 @@ namespace KinectImageConvertSender
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(662, 298);
+            this.label2.Location = new System.Drawing.Point(342, 638);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(15, 12);
             this.label2.TabIndex = 7;
@@ -126,7 +129,7 @@ namespace KinectImageConvertSender
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(662, 315);
+            this.label3.Location = new System.Drawing.Point(342, 655);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(26, 12);
             this.label3.TabIndex = 8;
@@ -135,7 +138,7 @@ namespace KinectImageConvertSender
             // ConnectViewPort
             // 
             this.ConnectViewPort.AutoSize = true;
-            this.ConnectViewPort.Location = new System.Drawing.Point(694, 315);
+            this.ConnectViewPort.Location = new System.Drawing.Point(374, 655);
             this.ConnectViewPort.Name = "ConnectViewPort";
             this.ConnectViewPort.Size = new System.Drawing.Size(93, 12);
             this.ConnectViewPort.TabIndex = 9;
@@ -144,7 +147,7 @@ namespace KinectImageConvertSender
             // PCInfo
             // 
             this.PCInfo.AutoSize = true;
-            this.PCInfo.Location = new System.Drawing.Point(660, 27);
+            this.PCInfo.Location = new System.Drawing.Point(340, 367);
             this.PCInfo.Name = "PCInfo";
             this.PCInfo.Size = new System.Drawing.Size(43, 12);
             this.PCInfo.TabIndex = 10;
@@ -153,7 +156,7 @@ namespace KinectImageConvertSender
             // PCViewPort
             // 
             this.PCViewPort.AutoSize = true;
-            this.PCViewPort.Location = new System.Drawing.Point(694, 60);
+            this.PCViewPort.Location = new System.Drawing.Point(374, 400);
             this.PCViewPort.Name = "PCViewPort";
             this.PCViewPort.Size = new System.Drawing.Size(66, 12);
             this.PCViewPort.TabIndex = 15;
@@ -162,7 +165,7 @@ namespace KinectImageConvertSender
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(662, 60);
+            this.label5.Location = new System.Drawing.Point(342, 400);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(26, 12);
             this.label5.TabIndex = 14;
@@ -171,7 +174,7 @@ namespace KinectImageConvertSender
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(662, 43);
+            this.label6.Location = new System.Drawing.Point(342, 383);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(15, 12);
             this.label6.TabIndex = 13;
@@ -180,7 +183,7 @@ namespace KinectImageConvertSender
             // PCViewIpAdress
             // 
             this.PCViewIpAdress.AutoSize = true;
-            this.PCViewIpAdress.Location = new System.Drawing.Point(694, 43);
+            this.PCViewIpAdress.Location = new System.Drawing.Point(374, 383);
             this.PCViewIpAdress.Name = "PCViewIpAdress";
             this.PCViewIpAdress.Size = new System.Drawing.Size(90, 12);
             this.PCViewIpAdress.TabIndex = 11;
@@ -188,7 +191,7 @@ namespace KinectImageConvertSender
             // 
             // GetConnectIP
             // 
-            this.GetConnectIP.Location = new System.Drawing.Point(729, 276);
+            this.GetConnectIP.Location = new System.Drawing.Point(409, 616);
             this.GetConnectIP.Name = "GetConnectIP";
             this.GetConnectIP.Size = new System.Drawing.Size(166, 19);
             this.GetConnectIP.TabIndex = 16;
@@ -196,17 +199,37 @@ namespace KinectImageConvertSender
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(662, 279);
+            this.label4.Location = new System.Drawing.Point(342, 619);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(61, 12);
             this.label4.TabIndex = 17;
             this.label4.Text = "Connect IP";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(16, 352);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(38, 12);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "Result";
+            // 
+            // resultBitmapBox
+            // 
+            this.resultBitmapBox.Location = new System.Drawing.Point(15, 367);
+            this.resultBitmapBox.Name = "resultBitmapBox";
+            this.resultBitmapBox.Size = new System.Drawing.Size(300, 300);
+            this.resultBitmapBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.resultBitmapBox.TabIndex = 18;
+            this.resultBitmapBox.TabStop = false;
+            // 
             // Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(962, 369);
+            this.ClientSize = new System.Drawing.Size(657, 712);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.resultBitmapBox);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.GetConnectIP);
             this.Controls.Add(this.PCViewPort);
@@ -222,13 +245,14 @@ namespace KinectImageConvertSender
             this.Controls.Add(this.UDPConectStart);
             this.Controls.Add(this.IR_Label);
             this.Controls.Add(this.Depth_Label);
-            this.Controls.Add(this.irBitmapBOX);
+            this.Controls.Add(this.irBitmapBox);
             this.Controls.Add(this.depthBitmapBox);
             this.Name = "Form";
             this.Text = "KinectViewAndUDPSender";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.depthBitmapBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.irBitmapBOX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.irBitmapBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.resultBitmapBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -237,7 +261,7 @@ namespace KinectImageConvertSender
         #endregion
 
         private System.Windows.Forms.PictureBox depthBitmapBox;
-        private System.Windows.Forms.PictureBox irBitmapBOX;
+        private System.Windows.Forms.PictureBox irBitmapBox;
         private System.Windows.Forms.Label Depth_Label;
         private System.Windows.Forms.Label IR_Label;
         private System.Windows.Forms.Button UDPConectStart;
@@ -253,6 +277,8 @@ namespace KinectImageConvertSender
         private System.Windows.Forms.Label PCViewIpAdress;
         private System.Windows.Forms.TextBox GetConnectIP;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.PictureBox resultBitmapBox;
     }
 }
 
