@@ -19,11 +19,13 @@ namespace KinectImageConvertSender
     public partial class Form : System.Windows.Forms.Form
     {
         //画像処理関係
-        private int _depthDistanceMin = 3000;
-        private int _depthDistanceMax = 4000;
+        private int _depthDistanceMin = 500;
+        private int _depthDistanceMax = 1500;
+        private int _depthThresholdMaxColor = 200;
 
-        private int _irDistanceMin = 3000;
-        private int _irDistanceMax = 4000;
+        private int _irDistanceMin = 500;
+        private int _irDistanceMax = 1500;
+        private int _irThresholdMaxColor = 255;
 
         private int _depthThresholdMin = 254;
         private int _depthThresholdMax = 255;
@@ -80,16 +82,125 @@ namespace KinectImageConvertSender
             //loopがtrueの間はデータを取り続ける
             while (loop)
             {
+                ////カラー画像を取得して保存
+                //var transform = kinect.GetCalibration().CreateTransformation();
+                //var colorWidth = kinect.GetCalibration().ColorCameraCalibration.ResolutionWidth;
+                //var colorHeight = kinect.GetCalibration().ColorCameraCalibration.ResolutionHeight;
+
+                //using (var transformedDepth = new Image(ImageFormat.Depth16, colorWidth, colorHeight, colorWidth * sizeof(UInt16)))
                 //kinectから新しいデータをもらう
                 using (Capture capture = await Task.Run(() => kinect.GetCapture()).ConfigureAwait(true))
                 {
-                    UpdateDepthBitmap(capture);
-                    //チェック用
+                    //transform.DepthImageToColorCamera(capture, transformedDepth);
+
+
+                    /*//カラー画像を取得
+                    unsafe
+                    {
+                        var colorImage = capture.Color;
+
+                        //画像のメモリのアドレスを取得
+                        //ColorのBitmap作成
+                        using (System.Buffers.MemoryHandle pin = colorImage.Memory.Pin())
+                        {
+
+                            //Bitmap画像を作成
+                            var colorBitmap = new System.Drawing.Bitmap(
+                                 colorImage.WidthPixels, //カラー画像の横幅
+                                 colorImage.HeightPixels,//カラー画像の縦幅
+                                 colorImage.StrideBytes, //横一列のバイト数(width*4)
+                                 System.Drawing.Imaging.PixelFormat.Format32bppArgb,//カラーフォーマット(RGBA)
+                                 (IntPtr)pin.Pointer); //各ピクセルの色情報
+                            //ファイルに保存
+                            //colorBitmap.Save(@"保存したいパス\" + System.DateTime.Now.ToString("yyyyMMddhhmmss") + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                            resultBitmapBox.Image = colorBitmap;
+                            colorImage.Dispose();
+                            pin.Dispose();
+
+                        }
+                    }*/
+
+
+                    //Depth画像を取得
+                    Image depthImage = capture.Depth;
+                    //Depth画像の各ピクセルの値(奥行)のみを取得
+                    ushort[] depthArray = depthImage.GetPixels<ushort>().ToArray();
+                    //depthBitmapの各画素に値を書き込む準備
+                    BitmapData bitmapData = depthBitmap.LockBits(new Rectangle(0, 0, depthBitmap.Width, depthBitmap.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+                    unsafe
+                    {
+                        //各ピクセルの値へのポインタ
+                        byte* pixels = (byte*)bitmapData.Scan0;
+                        int index;
+                        int depth;
+                        //一ピクセルずつ処理
+                        for (int i = 0; i < depthArray.Length; i++)
+                        {
+                            //500～5000mmを0～255に変換
+                            depth = 255 - (int)(255 * (depthArray[i] - _depthDistanceMin) / _depthDistanceMax);
+                            if (depth < 0)
+                            {
+                                depth = 0;
+                            }
+                            else if (depth > _depthThresholdMaxColor)
+                            {
+                                depth = 255;
+                            }
+                            index = i * 4;
+                            pixels[index++] = (byte)depth;
+                            pixels[index++] = (byte)depth;
+                            pixels[index++] = (byte)depth;
+                            pixels[index++] = 255;
+                        }
+                    }
+                    //書き込み終了
+                    depthBitmap.UnlockBits(bitmapData);
+                    depthImage.Dispose();
+                    //pictureBoxに画像を貼り付け
                     depthBitmapBox.Image = depthBitmap;
 
-                    UpdateIrBitmap(capture);
-                    //チェック用
+
+
+
+                    //IR画像を取得
+                    Image irImage = capture.IR;
+                    //Depth画像の各ピクセルの値(奥行)のみを取得
+                    ushort[] irArray = irImage.GetPixels<ushort>().ToArray();
+                    //depthBitmapの各画素に値を書き込む準備
+                    BitmapData irData = irBitmap.LockBits(new Rectangle(0, 0, irBitmap.Width, irBitmap.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+                    unsafe
+                    {
+                        //各ピクセルの値へのポインタ
+                        byte* pixels = (byte*)irData.Scan0;
+                        int index;
+                        int ir;
+                        //一ピクセルずつ処理
+                        for (int i = 0; i < irArray.Length; i++)
+                        {
+                            //500～5000mmを0～255に変換
+                            ir = 255 - (int)(255 * (irArray[i] - _irDistanceMin) / _irDistanceMax);
+                            if (ir < 0)
+                            {
+                                ir = 0;
+                            }
+                            else if (ir > _irThresholdMaxColor)
+                            {
+                                ir = 255;
+                            }
+                            index = i * 4;
+                            pixels[index++] = (byte)ir;
+                            pixels[index++] = (byte)ir;
+                            pixels[index++] = (byte)ir;
+                            pixels[index++] = 255;
+                        }
+                    }
+                    //書き込み終了
+                    irBitmap.UnlockBits(bitmapData);
+                    irImage.Dispose();
+                    //pictureBoxに画像を貼り付け
                     irBitmapBox.Image = irBitmap;
+
+                    //----------------------------------------------------------------------------------------------------------//
 
 
                     //以下マスク処理
@@ -125,6 +236,9 @@ namespace KinectImageConvertSender
                     Cv2.BitwiseAnd(tempDepthMatBit, tempDepthMatBit, outDst, tempIrMatBit);
 
                     resultBitmapBox.Image = BitmapConverter.ToBitmap(outDst);
+
+
+
                     //最終結果はoutDst
                     Console.WriteLine(outDst.Type());
                     //変換チェック
@@ -148,6 +262,7 @@ namespace KinectImageConvertSender
                     tempDepthMatBit.Dispose();
                     tempIrMatBit.Dispose();
                     capture.Dispose();
+
                 }
                 //表示を更新
                 this.Update();
@@ -156,68 +271,6 @@ namespace KinectImageConvertSender
             kinect.StopCameras();
         }
 
-
-        private void UpdateDepthBitmap(Capture capture)
-        {
-            //Depth画像を取得
-            Image depthImage = capture.Depth;
-            //Depth画像の各ピクセルの値(奥行)のみを取得
-            ushort[] depthArray = depthImage.GetPixels<ushort>().ToArray();
-            //depthBitmapの各画素に値を書き込む準備
-            BitmapData bitmapData = depthBitmap.LockBits(new Rectangle(0, 0, depthBitmap.Width, depthBitmap.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-            unsafe
-            {
-                //各ピクセルの値へのポインタ
-                byte* pixels = (byte*)bitmapData.Scan0;
-                int index;
-                int depth;
-                //一ピクセルずつ処理
-                for (int i = 0; i < depthArray.Length; i++)
-                {
-                    //_depthDistanceMin～_depthDistanceMaxを0～255に変換
-                    depth = 255 - (int)(255 * (depthArray[i] - _depthDistanceMin) / _depthDistanceMax);
-                    if (depth < 0 || depth > 255) depth = 0;
-                    index = i * 4;
-                    pixels[index++] = (byte)depth;
-                    pixels[index++] = (byte)depth;
-                    pixels[index++] = (byte)depth;
-                    pixels[index++] = 255;
-                }
-            }
-            //書き込み終了
-            depthBitmap.UnlockBits(bitmapData);
-        }
-
-        private void UpdateIrBitmap(Capture capture)
-        {
-            //Depth画像を取得
-            Image irImage = capture.IR;
-            //Depth画像の各ピクセルの値(奥行)のみを取得
-            ushort[] irArray = irImage.GetPixels<ushort>().ToArray();
-            //depthBitmapの各画素に値を書き込む準備
-            BitmapData bitmapData = irBitmap.LockBits(new Rectangle(0, 0, irBitmap.Width, irBitmap.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-            unsafe
-            {
-                //各ピクセルの値へのポインタ
-                byte* pixels = (byte*)bitmapData.Scan0;
-                int index;
-                int depth;
-                //一ピクセルずつ処理
-                for (int i = 0; i < irArray.Length; i++)
-                {
-                    //_irDistanceMin～_irDistanceMaxを0～255に変換
-                    depth = 255 - (int)(255 * (irArray[i] - _irDistanceMin) / _irDistanceMax);
-                    if (depth < 0 || depth > 255) depth = 0;
-                    index = i * 4;
-                    pixels[index++] = (byte)depth;
-                    pixels[index++] = (byte)depth;
-                    pixels[index++] = (byte)depth;
-                    pixels[index++] = 255;
-                }
-            }
-            //書き込み終了
-            irBitmap.UnlockBits(bitmapData);
-        }
         //Bitmap画像に関する初期設定
         private void InitBitmap()
         {
@@ -256,7 +309,7 @@ namespace KinectImageConvertSender
             _ipAdressText = GetConnectIP.Text;
             ConnectViewIpAdress.Text = _ipAdressText.ToString();
             ConnectViewPort.Text = _port.ToString();
-            UDPSender = new UDPSender(_ipAdressText,_port);
+            UDPSender = new UDPSender(_ipAdressText, _port);
             _isUDPSend = true;
         }
     }
