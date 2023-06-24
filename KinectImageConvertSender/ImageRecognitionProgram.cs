@@ -21,7 +21,7 @@ try
     IEnumerable<ImageNetData> images = ImageNetData.ReadFromFile(imagesFolder);
     IDataView imageDataView = mlContext.Data.LoadFromEnumerable(images);
 
-    Console.WriteLine("========= End of Process..Hit any Key ========");
+    Console.WriteLine(assetsPath);
 
     // Create instance of model scorer
     var modelScorer = new OnnxModelScorer(imagesFolder, modelFilePath, mlContext);
