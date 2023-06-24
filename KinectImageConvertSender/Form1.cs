@@ -55,9 +55,9 @@ namespace KinectImageConvertSender
         public Form1()
         {
             InitializeComponent();
-            InitKinect();
+            //InitKinect();
             //Kinectの設定情報に基づいてBitmap関連情報を初期化
-            InitBitmap();
+            //InitBitmap();
 
             //IPv4のアドレスを取得して表示
             IPHostEntry ipHostEntry = Dns.GetHostEntry(Dns.GetHostName());
@@ -73,7 +73,7 @@ namespace KinectImageConvertSender
             }
 
             //(追加)初期化が終わったのでデータ取得開始
-            Task t = KinectLoop();
+            //Task t = KinectLoop();
         }
         //(追加)Kinectからデータを取得して表示するメソッド
         private async Task KinectLoop()
