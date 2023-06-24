@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 //AzureKinectSDKの読み込み
 using Microsoft.Azure.Kinect.Sensor;
 //(追加)AzureKinectとSystemの変数名の曖昧さをなくすため下記を追加
@@ -16,7 +15,7 @@ using OpenCvSharp.Extensions;
 
 namespace KinectImageConvertSender
 {
-    public partial class Form : System.Windows.Forms.Form
+    public partial class Form1 : Form
     {
         //画像処理関係
         private int _depthDistanceMin = 500;
@@ -53,7 +52,7 @@ namespace KinectImageConvertSender
         Bitmap irBitmap;
         //(追加)Kinectの画像取得の可否
         bool loop = true;
-        public Form()
+        public Form1()
         {
             InitializeComponent();
             InitKinect();
