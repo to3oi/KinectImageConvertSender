@@ -1,20 +1,18 @@
-using System;
-using System.Drawing;
-using System.Threading.Tasks;
-//AzureKinectSDKの読み込み
-using Microsoft.Azure.Kinect.Sensor;
-//(追加)AzureKinectとSystemの変数名の曖昧さをなくすため下記を追加
-using Image = Microsoft.Azure.Kinect.Sensor.Image;
-using BitmapData = System.Drawing.Imaging.BitmapData;
-using PixelFormat = System.Drawing.Imaging.PixelFormat;
-using OpenCvSharp;
-using UnityEasyNet;
-using System.Net;
-using OpenCvSharp.Extensions;
-
-
 namespace KinectImageConvertSender
 {
+    using System;
+    using System.Drawing;
+    using System.Threading.Tasks;
+    //AzureKinectSDKの読み込み
+    using Microsoft.Azure.Kinect.Sensor;
+    //(追加)AzureKinectとSystemの変数名の曖昧さをなくすため下記を追加
+    using Image = Microsoft.Azure.Kinect.Sensor.Image;
+    using BitmapData = System.Drawing.Imaging.BitmapData;
+    using PixelFormat = System.Drawing.Imaging.PixelFormat;
+    using OpenCvSharp;
+    using UnityEasyNet;
+    using System.Net;
+    using OpenCvSharp.Extensions;
     public partial class Form1 : Form
     {
         //画像処理関係
@@ -55,9 +53,9 @@ namespace KinectImageConvertSender
         public Form1()
         {
             InitializeComponent();
-            //InitKinect();
+            InitKinect();
             //Kinectの設定情報に基づいてBitmap関連情報を初期化
-            //InitBitmap();
+            InitBitmap();
 
             //IPv4のアドレスを取得して表示
             IPHostEntry ipHostEntry = Dns.GetHostEntry(Dns.GetHostName());
@@ -73,7 +71,7 @@ namespace KinectImageConvertSender
             }
 
             //(追加)初期化が終わったのでデータ取得開始
-            //Task t = KinectLoop();
+            Task t = KinectLoop();
         }
         //(追加)Kinectからデータを取得して表示するメソッド
         private async Task KinectLoop()

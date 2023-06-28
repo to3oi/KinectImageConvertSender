@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.ML;
+﻿using Microsoft.ML;
 using Microsoft.ML.Data;
 using ObjectDetection.DataStructures;
 using ObjectDetection.YoloParser;
@@ -54,11 +51,13 @@ namespace ObjectDetection
             var data = mlContext.Data.LoadFromEnumerable(new List<ImageNetData>());
 
             // Define scoring pipeline
-/*            var pipeline = mlContext.Transforms.LoadImages(outputColumnName: "image", imageFolder: "", inputColumnName: nameof(ImageNetData.ImagePath))
-                            .Append(mlContext.Transforms.ResizeImages(outputColumnName: "image", imageWidth: ImageNetSettings.imageWidth, imageHeight: ImageNetSettings.imageHeight, inputColumnName: "image"))
-                            .Append(mlContext.Transforms.ExtractPixels(outputColumnName: "image"))
-                            .Append(mlContext.Transforms.ApplyOnnxModel(modelFile: modelLocation, outputColumnNames: new[] { TinyYoloModelSettings.ModelOutput }, inputColumnNames: new[] { TinyYoloModelSettings.ModelInput }));
-*/
+            //not Custom Vision pipeline settting
+            /* var pipeline = mlContext.Transforms.LoadImages(outputColumnName: "image", imageFolder: "", inputColumnName: nameof(ImageNetData.ImagePath))
+                          .Append(mlContext.Transforms.ResizeImages(outputColumnName: "image", imageWidth: ImageNetSettings.imageWidth, imageHeight: ImageNetSettings.imageHeight, inputColumnName: "image"))
+                          .Append(mlContext.Transforms.ExtractPixels(outputColumnName: "image"))
+                          .Append(mlContext.Transforms.ApplyOnnxModel(modelFile: modelLocation, outputColumnNames: new[] { TinyYoloModelSettings.ModelOutput }, inputColumnNames: new[] { TinyYoloModelSettings.ModelInput }));
+            */
+
             var pipeline = mlContext.Transforms.LoadImages(outputColumnName: "data", imageFolder: "", inputColumnName: nameof(ImageNetData.ImagePath))
                           .Append(mlContext.Transforms.ResizeImages(outputColumnName: "data", imageWidth: ImageNetSettings.imageWidth, imageHeight: ImageNetSettings.imageHeight, inputColumnName: "data"))
                           .Append(mlContext.Transforms.ExtractPixels(outputColumnName: "data"))
