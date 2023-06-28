@@ -29,256 +29,287 @@ namespace KinectImageConvertSender
         /// </summary>
         private void InitializeComponent()
         {
-            this.depthBitmapBox = new System.Windows.Forms.PictureBox();
-            this.irBitmapBox = new System.Windows.Forms.PictureBox();
-            this.Depth_Label = new System.Windows.Forms.Label();
-            this.IR_Label = new System.Windows.Forms.Label();
-            this.UDPConectStart = new System.Windows.Forms.Button();
-            this.ConnectViewIpAdress = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.ConnectViewPort = new System.Windows.Forms.Label();
-            this.PCInfo = new System.Windows.Forms.Label();
-            this.PCViewPort = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.PCViewIpAdress = new System.Windows.Forms.Label();
-            this.GetConnectIP = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.resultBitmapBox = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.depthBitmapBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.irBitmapBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.resultBitmapBox)).BeginInit();
-            this.SuspendLayout();
+            depthBitmapBox = new PictureBox();
+            irBitmapBox = new PictureBox();
+            Depth_Label = new Label();
+            IR_Label = new Label();
+            UDPConectStart = new Button();
+            ConnectViewIpAdress = new Label();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
+            ConnectViewPort = new Label();
+            PCInfo = new Label();
+            PCViewPort = new Label();
+            label5 = new Label();
+            label6 = new Label();
+            PCViewIpAdress = new Label();
+            GetConnectIP = new TextBox();
+            label4 = new Label();
+            label7 = new Label();
+            resultBitmapBox = new PictureBox();
+            DebugText = new Label();
+            ((System.ComponentModel.ISupportInitialize)depthBitmapBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)irBitmapBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)resultBitmapBox).BeginInit();
+            SuspendLayout();
             // 
             // depthBitmapBox
             // 
-            this.depthBitmapBox.Location = new System.Drawing.Point(15, 27);
-            this.depthBitmapBox.Name = "depthBitmapBox";
-            this.depthBitmapBox.Size = new System.Drawing.Size(300, 300);
-            this.depthBitmapBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.depthBitmapBox.TabIndex = 0;
-            this.depthBitmapBox.TabStop = false;
+            depthBitmapBox.Location = new Point(18, 34);
+            depthBitmapBox.Margin = new Padding(4, 4, 4, 4);
+            depthBitmapBox.Name = "depthBitmapBox";
+            depthBitmapBox.Size = new Size(350, 375);
+            depthBitmapBox.SizeMode = PictureBoxSizeMode.Zoom;
+            depthBitmapBox.TabIndex = 0;
+            depthBitmapBox.TabStop = false;
             // 
             // irBitmapBox
             // 
-            this.irBitmapBox.Location = new System.Drawing.Point(339, 27);
-            this.irBitmapBox.Name = "irBitmapBox";
-            this.irBitmapBox.Size = new System.Drawing.Size(300, 300);
-            this.irBitmapBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.irBitmapBox.TabIndex = 1;
-            this.irBitmapBox.TabStop = false;
+            irBitmapBox.Location = new Point(396, 34);
+            irBitmapBox.Margin = new Padding(4, 4, 4, 4);
+            irBitmapBox.Name = "irBitmapBox";
+            irBitmapBox.Size = new Size(350, 375);
+            irBitmapBox.SizeMode = PictureBoxSizeMode.Zoom;
+            irBitmapBox.TabIndex = 1;
+            irBitmapBox.TabStop = false;
             // 
             // Depth_Label
             // 
-            this.Depth_Label.AutoSize = true;
-            this.Depth_Label.Location = new System.Drawing.Point(13, 12);
-            this.Depth_Label.Name = "Depth_Label";
-            this.Depth_Label.Size = new System.Drawing.Size(35, 12);
-            this.Depth_Label.TabIndex = 2;
-            this.Depth_Label.Text = "Depth";
+            Depth_Label.AutoSize = true;
+            Depth_Label.Location = new Point(15, 15);
+            Depth_Label.Margin = new Padding(4, 0, 4, 0);
+            Depth_Label.Name = "Depth_Label";
+            Depth_Label.Size = new Size(39, 15);
+            Depth_Label.TabIndex = 2;
+            Depth_Label.Text = "Depth";
             // 
             // IR_Label
             // 
-            this.IR_Label.AutoSize = true;
-            this.IR_Label.Location = new System.Drawing.Point(340, 12);
-            this.IR_Label.Name = "IR_Label";
-            this.IR_Label.Size = new System.Drawing.Size(16, 12);
-            this.IR_Label.TabIndex = 3;
-            this.IR_Label.Text = "IR";
+            IR_Label.AutoSize = true;
+            IR_Label.Location = new Point(397, 15);
+            IR_Label.Margin = new Padding(4, 0, 4, 0);
+            IR_Label.Name = "IR_Label";
+            IR_Label.Size = new Size(17, 15);
+            IR_Label.TabIndex = 3;
+            IR_Label.Text = "IR";
             // 
             // UDPConectStart
             // 
-            this.UDPConectStart.Location = new System.Drawing.Point(342, 573);
-            this.UDPConectStart.Name = "UDPConectStart";
-            this.UDPConectStart.Size = new System.Drawing.Size(75, 23);
-            this.UDPConectStart.TabIndex = 4;
-            this.UDPConectStart.Text = "UDPConectStart";
-            this.UDPConectStart.UseVisualStyleBackColor = true;
-            this.UDPConectStart.Click += new System.EventHandler(this.UDPConectStart_Click);
+            UDPConectStart.Location = new Point(399, 716);
+            UDPConectStart.Margin = new Padding(4, 4, 4, 4);
+            UDPConectStart.Name = "UDPConectStart";
+            UDPConectStart.Size = new Size(88, 29);
+            UDPConectStart.TabIndex = 4;
+            UDPConectStart.Text = "UDPConectStart";
+            UDPConectStart.UseVisualStyleBackColor = true;
+            UDPConectStart.Click += UDPConectStart_Click;
             // 
             // ConnectViewIpAdress
             // 
-            this.ConnectViewIpAdress.AutoSize = true;
-            this.ConnectViewIpAdress.Location = new System.Drawing.Point(374, 638);
-            this.ConnectViewIpAdress.Name = "ConnectViewIpAdress";
-            this.ConnectViewIpAdress.Size = new System.Drawing.Size(117, 12);
-            this.ConnectViewIpAdress.TabIndex = 5;
-            this.ConnectViewIpAdress.Text = "ConnectViewIpAdress";
+            ConnectViewIpAdress.AutoSize = true;
+            ConnectViewIpAdress.Location = new Point(436, 798);
+            ConnectViewIpAdress.Margin = new Padding(4, 0, 4, 0);
+            ConnectViewIpAdress.Name = "ConnectViewIpAdress";
+            ConnectViewIpAdress.Size = new Size(121, 15);
+            ConnectViewIpAdress.TabIndex = 5;
+            ConnectViewIpAdress.Text = "ConnectViewIpAdress";
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(342, 601);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(66, 12);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "ConnectInfo";
+            label1.AutoSize = true;
+            label1.Location = new Point(399, 751);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(72, 15);
+            label1.TabIndex = 6;
+            label1.Text = "ConnectInfo";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(342, 638);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(15, 12);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "IP";
+            label2.AutoSize = true;
+            label2.Location = new Point(399, 798);
+            label2.Margin = new Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(17, 15);
+            label2.TabIndex = 7;
+            label2.Text = "IP";
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(342, 655);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(26, 12);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Port";
+            label3.AutoSize = true;
+            label3.Location = new Point(399, 819);
+            label3.Margin = new Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(29, 15);
+            label3.TabIndex = 8;
+            label3.Text = "Port";
             // 
             // ConnectViewPort
             // 
-            this.ConnectViewPort.AutoSize = true;
-            this.ConnectViewPort.Location = new System.Drawing.Point(374, 655);
-            this.ConnectViewPort.Name = "ConnectViewPort";
-            this.ConnectViewPort.Size = new System.Drawing.Size(93, 12);
-            this.ConnectViewPort.TabIndex = 9;
-            this.ConnectViewPort.Text = "ConnectViewPort";
+            ConnectViewPort.AutoSize = true;
+            ConnectViewPort.Location = new Point(436, 819);
+            ConnectViewPort.Margin = new Padding(4, 0, 4, 0);
+            ConnectViewPort.Name = "ConnectViewPort";
+            ConnectViewPort.Size = new Size(98, 15);
+            ConnectViewPort.TabIndex = 9;
+            ConnectViewPort.Text = "ConnectViewPort";
             // 
             // PCInfo
             // 
-            this.PCInfo.AutoSize = true;
-            this.PCInfo.Location = new System.Drawing.Point(340, 367);
-            this.PCInfo.Name = "PCInfo";
-            this.PCInfo.Size = new System.Drawing.Size(43, 12);
-            this.PCInfo.TabIndex = 10;
-            this.PCInfo.Text = "PC Info";
+            PCInfo.AutoSize = true;
+            PCInfo.Location = new Point(397, 459);
+            PCInfo.Margin = new Padding(4, 0, 4, 0);
+            PCInfo.Name = "PCInfo";
+            PCInfo.Size = new Size(45, 15);
+            PCInfo.TabIndex = 10;
+            PCInfo.Text = "PC Info";
             // 
             // PCViewPort
             // 
-            this.PCViewPort.AutoSize = true;
-            this.PCViewPort.Location = new System.Drawing.Point(374, 400);
-            this.PCViewPort.Name = "PCViewPort";
-            this.PCViewPort.Size = new System.Drawing.Size(66, 12);
-            this.PCViewPort.TabIndex = 15;
-            this.PCViewPort.Text = "PCViewPort";
+            PCViewPort.AutoSize = true;
+            PCViewPort.Location = new Point(436, 500);
+            PCViewPort.Margin = new Padding(4, 0, 4, 0);
+            PCViewPort.Name = "PCViewPort";
+            PCViewPort.Size = new Size(68, 15);
+            PCViewPort.TabIndex = 15;
+            PCViewPort.Text = "PCViewPort";
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(342, 400);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(26, 12);
-            this.label5.TabIndex = 14;
-            this.label5.Text = "Port";
+            label5.AutoSize = true;
+            label5.Location = new Point(399, 500);
+            label5.Margin = new Padding(4, 0, 4, 0);
+            label5.Name = "label5";
+            label5.Size = new Size(29, 15);
+            label5.TabIndex = 14;
+            label5.Text = "Port";
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(342, 383);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(15, 12);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "IP";
+            label6.AutoSize = true;
+            label6.Location = new Point(399, 479);
+            label6.Margin = new Padding(4, 0, 4, 0);
+            label6.Name = "label6";
+            label6.Size = new Size(17, 15);
+            label6.TabIndex = 13;
+            label6.Text = "IP";
             // 
             // PCViewIpAdress
             // 
-            this.PCViewIpAdress.AutoSize = true;
-            this.PCViewIpAdress.Location = new System.Drawing.Point(374, 383);
-            this.PCViewIpAdress.Name = "PCViewIpAdress";
-            this.PCViewIpAdress.Size = new System.Drawing.Size(90, 12);
-            this.PCViewIpAdress.TabIndex = 11;
-            this.PCViewIpAdress.Text = "PCViewIpAdress";
+            PCViewIpAdress.AutoSize = true;
+            PCViewIpAdress.Location = new Point(436, 479);
+            PCViewIpAdress.Margin = new Padding(4, 0, 4, 0);
+            PCViewIpAdress.Name = "PCViewIpAdress";
+            PCViewIpAdress.Size = new Size(91, 15);
+            PCViewIpAdress.TabIndex = 11;
+            PCViewIpAdress.Text = "PCViewIpAdress";
             // 
             // GetConnectIP
             // 
-            this.GetConnectIP.Location = new System.Drawing.Point(409, 616);
-            this.GetConnectIP.Name = "GetConnectIP";
-            this.GetConnectIP.Size = new System.Drawing.Size(166, 19);
-            this.GetConnectIP.TabIndex = 16;
+            GetConnectIP.Location = new Point(477, 770);
+            GetConnectIP.Margin = new Padding(4, 4, 4, 4);
+            GetConnectIP.Name = "GetConnectIP";
+            GetConnectIP.Size = new Size(193, 23);
+            GetConnectIP.TabIndex = 16;
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(342, 619);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(61, 12);
-            this.label4.TabIndex = 17;
-            this.label4.Text = "Connect IP";
+            label4.AutoSize = true;
+            label4.Location = new Point(399, 774);
+            label4.Margin = new Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(64, 15);
+            label4.TabIndex = 17;
+            label4.Text = "Connect IP";
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(16, 352);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(38, 12);
-            this.label7.TabIndex = 19;
-            this.label7.Text = "Result";
+            label7.AutoSize = true;
+            label7.Location = new Point(19, 440);
+            label7.Margin = new Padding(4, 0, 4, 0);
+            label7.Name = "label7";
+            label7.Size = new Size(39, 15);
+            label7.TabIndex = 19;
+            label7.Text = "Result";
             // 
             // resultBitmapBox
             // 
-            this.resultBitmapBox.Location = new System.Drawing.Point(15, 367);
-            this.resultBitmapBox.Name = "resultBitmapBox";
-            this.resultBitmapBox.Size = new System.Drawing.Size(300, 300);
-            this.resultBitmapBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.resultBitmapBox.TabIndex = 18;
-            this.resultBitmapBox.TabStop = false;
+            resultBitmapBox.Location = new Point(18, 459);
+            resultBitmapBox.Margin = new Padding(4, 4, 4, 4);
+            resultBitmapBox.Name = "resultBitmapBox";
+            resultBitmapBox.Size = new Size(350, 375);
+            resultBitmapBox.SizeMode = PictureBoxSizeMode.Zoom;
+            resultBitmapBox.TabIndex = 18;
+            resultBitmapBox.TabStop = false;
             // 
-            // Form
+            // DebugText
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(657, 712);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.resultBitmapBox);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.GetConnectIP);
-            this.Controls.Add(this.PCViewPort);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.PCViewIpAdress);
-            this.Controls.Add(this.PCInfo);
-            this.Controls.Add(this.ConnectViewPort);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.ConnectViewIpAdress);
-            this.Controls.Add(this.UDPConectStart);
-            this.Controls.Add(this.IR_Label);
-            this.Controls.Add(this.Depth_Label);
-            this.Controls.Add(this.irBitmapBox);
-            this.Controls.Add(this.depthBitmapBox);
-            this.Name = "Form";
-            this.Text = "KinectViewAndUDPSender";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            ((System.ComponentModel.ISupportInitialize)(this.depthBitmapBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.irBitmapBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.resultBitmapBox)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            DebugText.AutoSize = true;
+            DebugText.Location = new Point(796, 34);
+            DebugText.Name = "DebugText";
+            DebugText.Size = new Size(38, 15);
+            DebugText.TabIndex = 20;
+            DebugText.Text = "label8";
+            // 
+            // Form1
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1215, 890);
+            Controls.Add(DebugText);
+            Controls.Add(label7);
+            Controls.Add(resultBitmapBox);
+            Controls.Add(label4);
+            Controls.Add(GetConnectIP);
+            Controls.Add(PCViewPort);
+            Controls.Add(label5);
+            Controls.Add(label6);
+            Controls.Add(PCViewIpAdress);
+            Controls.Add(PCInfo);
+            Controls.Add(ConnectViewPort);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(ConnectViewIpAdress);
+            Controls.Add(UDPConectStart);
+            Controls.Add(IR_Label);
+            Controls.Add(Depth_Label);
+            Controls.Add(irBitmapBox);
+            Controls.Add(depthBitmapBox);
+            Margin = new Padding(4, 4, 4, 4);
+            Name = "Form1";
+            Text = "KinectViewAndUDPSender";
+            FormClosing += Form1_FormClosing;
+            ((System.ComponentModel.ISupportInitialize)depthBitmapBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)irBitmapBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)resultBitmapBox).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
-        private System.Windows.Forms.PictureBox depthBitmapBox;
-        private System.Windows.Forms.PictureBox irBitmapBox;
-        private System.Windows.Forms.Label Depth_Label;
-        private System.Windows.Forms.Label IR_Label;
-        private System.Windows.Forms.Button UDPConectStart;
-        private System.Windows.Forms.Label ConnectViewIpAdress;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label ConnectViewPort;
-        private System.Windows.Forms.Label PCInfo;
-        private System.Windows.Forms.Label PCViewPort;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label PCViewIpAdress;
-        private System.Windows.Forms.TextBox GetConnectIP;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.PictureBox resultBitmapBox;
+        private PictureBox depthBitmapBox;
+        private PictureBox irBitmapBox;
+        private Label Depth_Label;
+        private Label IR_Label;
+        private Button UDPConectStart;
+        private Label ConnectViewIpAdress;
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private Label ConnectViewPort;
+        private Label PCInfo;
+        private Label PCViewPort;
+        private Label label5;
+        private Label label6;
+        private Label PCViewIpAdress;
+        private TextBox GetConnectIP;
+        private Label label4;
+        private Label label7;
+        private PictureBox resultBitmapBox;
+        private Label DebugText;
     }
 }
 

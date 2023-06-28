@@ -58,7 +58,8 @@ namespace ObjectDetection
                           .Append(mlContext.Transforms.ApplyOnnxModel(modelFile: modelLocation, outputColumnNames: new[] { TinyYoloModelSettings.ModelOutput }, inputColumnNames: new[] { TinyYoloModelSettings.ModelInput }));
             */
 
-            var pipeline = mlContext.Transforms.LoadImages(outputColumnName: "data", imageFolder: "", inputColumnName: nameof(ImageNetData.ImagePath))
+            var pipeline = mlContext.Transforms.LoadImages
+                (outputColumnName: "data", imageFolder: "", inputColumnName: nameof(ImageNetData.ImagePath))
                           .Append(mlContext.Transforms.ResizeImages(outputColumnName: "data", imageWidth: ImageNetSettings.imageWidth, imageHeight: ImageNetSettings.imageHeight, inputColumnName: "data"))
                           .Append(mlContext.Transforms.ExtractPixels(outputColumnName: "data"))
                           .Append(mlContext.Transforms.ApplyOnnxModel(modelFile: modelLocation, outputColumnNames: new[] { TinyYoloModelSettings.ModelOutput }, inputColumnNames: new[] { TinyYoloModelSettings.ModelInput }));

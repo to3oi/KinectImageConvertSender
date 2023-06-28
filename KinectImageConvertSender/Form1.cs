@@ -13,6 +13,9 @@ namespace KinectImageConvertSender
     using UnityEasyNet;
     using System.Net;
     using OpenCvSharp.Extensions;
+    using Microsoft.VisualBasic.ApplicationServices;
+    using System.Net.NetworkInformation;
+
     public partial class Form1 : Form
     {
         //画像処理関係
@@ -50,6 +53,9 @@ namespace KinectImageConvertSender
         Bitmap irBitmap;
         //(追加)Kinectの画像取得の可否
         bool loop = true;
+
+        uint saveFileIndex = 0;
+        ImageRecognition imageRecognition;
         public Form1()
         {
             InitializeComponent();
@@ -70,9 +76,23 @@ namespace KinectImageConvertSender
                 }
             }
 
+            imageRecognition = new ImageRecognition();
+
             //(追加)初期化が終わったのでデータ取得開始
             Task t = KinectLoop();
         }
+
+        string GetAbsolutePath(string relativePath)
+        {
+            FileInfo _dataRoot = new FileInfo(typeof(Program).Assembly.Location);
+            string assemblyFolderPath = _dataRoot.Directory.FullName;
+
+            string fullPath = Path.Combine(assemblyFolderPath, relativePath);
+
+            return fullPath;
+        }
+
+
         //(追加)Kinectからデータを取得して表示するメソッド
         private async Task KinectLoop()
         {
@@ -91,6 +111,7 @@ namespace KinectImageConvertSender
                     //transform.DepthImageToColorCamera(capture, transformedDepth);
 
 
+                    //未使用
                     /*//カラー画像を取得
                     unsafe
                     {
@@ -234,27 +255,46 @@ namespace KinectImageConvertSender
 
                     resultBitmapBox.Image = BitmapConverter.ToBitmap(outDst);
 
+                    Cv2.ImShow("result", outDst);
+                    var assetsRelativePath = @"../../../../assets";
+                    var assetsPath = GetAbsolutePath(assetsRelativePath);
+                    var TempImageFilePath = Path.Combine(assetsPath, "TempImage", $"{saveFileIndex}.jpeg");
+
+                    //Save
+                    outDst.SaveImage(TempImageFilePath);
+
+                    await imageRecognition.ImageRecognitionToFilePath(TempImageFilePath);
+
+
+                    if (saveFileIndex <= 100)
+                    {
+                        saveFileIndex++;
+                    }
+                    else
+                    {
+                        saveFileIndex = 0;
+                    }
+
 
 
                     //最終結果はoutDst
-                    Console.WriteLine(outDst.Type());
+
                     //変換チェック
-                    //エンコード
-                    ImageEncodingParam encodingParam = new ImageEncodingParam(ImwriteFlags.PngBilevel, 0);
-                    var buffer = new byte[outDst.Rows * outDst.Cols * outDst.Channels()];
-                    Cv2.ImEncode(".png", outDst, out buffer, encodingParam);
-
-
-                    //デコード
-                    Mat res = Cv2.ImDecode(buffer, ImreadModes.AnyColor);
-                    //ここでbufferをUDPで送信すればよき
-                    if (_isUDPSend)
-                    {
-                        UDPSender.Send(buffer);
-                    }
-
-                    //チェック用
-                    Cv2.ImShow("result", res);
+                    //エンコードチェック
+                    /*  
+                        ImageEncodingParam encodingParam = new ImageEncodingParam(ImwriteFlags.PngBilevel, 0);
+                        var buffer = new byte[outDst.Rows * outDst.Cols * outDst.Channels()];
+                        Cv2.ImEncode(".png", outDst, out buffer, encodingParam);
+                        //デコード
+                        Mat res = Cv2.ImDecode(buffer, ImreadModes.AnyColor);
+                        //ここでbufferをUDPで送信すればよき
+                        if (_isUDPSend)
+                        {
+                            UDPSender.Send(buffer);
+                        }
+                        //チェック用
+                        Cv2.ImShow("result", res);
+                    */
 
                     tempDepthMatBit.Dispose();
                     tempIrMatBit.Dispose();
