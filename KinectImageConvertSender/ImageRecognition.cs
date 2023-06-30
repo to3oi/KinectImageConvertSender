@@ -189,40 +189,8 @@
 
                 //認識した座標を出力
                 var posX = x + width / 2;
-                var posY = y + width / 2;
+                var posY = y + height / 2;
                 results.Add(new ResultStruct(box.Label, posX, posY, box.Confidence));
-                /*
-                                    // Bounding Box Text
-                                    string text = $"{box.Label} ({(box.Confidence * 100).ToString("0")}%)";
-
-                                    using (Graphics thumbnailGraphic = Graphics.FromImage(image))
-                                    {
-                                        thumbnailGraphic.CompositingQuality = CompositingQuality.HighQuality;
-                                        thumbnailGraphic.SmoothingMode = SmoothingMode.HighQuality;
-                                        thumbnailGraphic.InterpolationMode = InterpolationMode.HighQualityBicubic;
-
-                                        // Define Text Options
-                                        Font drawFont = new Font("Arial", 12, FontStyle.Bold);
-                                        SizeF size = thumbnailGraphic.MeasureString(text, drawFont);
-                                        SolidBrush fontBrush = new SolidBrush(Color.Black);
-                                        Point atPoint = new Point((int)x, (int)y - (int)size.Height - 1);
-
-                                        // Define BoundingBox options
-                                        Pen pen = new Pen(box.BoxColor, 3.2f);
-                                        SolidBrush colorBrush = new SolidBrush(box.BoxColor);
-
-                                        // Draw text on image 
-                                        thumbnailGraphic.FillRectangle(colorBrush, (int)x, (int)(y - size.Height - 1), (int)size.Width, (int)size.Height);
-                                        thumbnailGraphic.DrawString(text, drawFont, fontBrush, atPoint);
-
-                                        // Draw bounding box on image
-                                        thumbnailGraphic.DrawRectangle(pen, x, y, width, height);
-
-                                        //認識した座標を出力
-                                        var posX = x + width / 2;
-                                        var posY = y + width / 2;
-                                        //1console.writeline($"{box.Label} and its Confidence score: {box.Confidence}  Position x :{posX} y:{posY}");
-                                    }*/
             }
             return results;
         }
