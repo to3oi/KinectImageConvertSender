@@ -1,22 +1,15 @@
+using Microsoft.Azure.Kinect.Sensor;
+using Image = Microsoft.Azure.Kinect.Sensor.Image;
+using BitmapData = System.Drawing.Imaging.BitmapData;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
+using OpenCvSharp;
+using UnityEasyNet;
+using System.Net;
+using OpenCvSharp.Extensions;
+using System.Runtime.InteropServices;
+
 namespace KinectImageConvertSender
 {
-    using System;
-    using System.Drawing;
-    using System.Threading.Tasks;
-    //AzureKinectSDKの読み込み
-    using Microsoft.Azure.Kinect.Sensor;
-    //(追加)AzureKinectとSystemの変数名の曖昧さをなくすため下記を追加
-    using Image = Microsoft.Azure.Kinect.Sensor.Image;
-    using BitmapData = System.Drawing.Imaging.BitmapData;
-    using PixelFormat = System.Drawing.Imaging.PixelFormat;
-    using OpenCvSharp;
-    using UnityEasyNet;
-    using System.Net;
-    using OpenCvSharp.Extensions;
-    using Microsoft.VisualBasic.ApplicationServices;
-    using System.Net.NetworkInformation;
-    using System.Runtime.InteropServices;
-
     public partial class Form1 : Form
     {
         //画像処理関係
@@ -38,11 +31,6 @@ namespace KinectImageConvertSender
         private bool _isUDPSend = false;
         private UDPSender UDPSender;
         private string _ipAdressText = "localhost";
-        //private string _ipAdressText = "10.208.0.146";
-        //private string _ipAdressText = "127.0.0.1";
-        //private string _ipAdressText = "192.168.0.0";
-        //private string _ipAdressText = "192.168.3.33";
-        //private string _ipAdressText = "192.168.3.33";
         private int _port = 12001; //適当な値
 
 
@@ -114,46 +102,9 @@ namespace KinectImageConvertSender
             //loopがtrueの間はデータを取り続ける
             while (loop)
             {
-                ////カラー画像を取得して保存
-                //var transform = kinect.GetCalibration().CreateTransformation();
-                //var colorWidth = kinect.GetCalibration().ColorCameraCalibration.ResolutionWidth;
-                //var colorHeight = kinect.GetCalibration().ColorCameraCalibration.ResolutionHeight;
-
-                //using (var transformedDepth = new Image(ImageFormat.Depth16, colorWidth, colorHeight, colorWidth * sizeof(UInt16)))
                 //kinectから新しいデータをもらう
                 using (Capture capture = await Task.Run(() => kinect.GetCapture()).ConfigureAwait(true))
                 {
-                    //transform.DepthImageToColorCamera(capture, transformedDepth);
-
-
-                    //未使用
-                    /*//カラー画像を取得
-                    unsafe
-                    {
-                        var colorImage = capture.Color;
-
-                        //画像のメモリのアドレスを取得
-                        //ColorのBitmap作成
-                        using (System.Buffers.MemoryHandle pin = colorImage.Memory.Pin())
-                        {
-
-                            //Bitmap画像を作成
-                            var colorBitmap = new System.Drawing.Bitmap(
-                                 colorImage.WidthPixels, //カラー画像の横幅
-                                 colorImage.HeightPixels,//カラー画像の縦幅
-                                 colorImage.StrideBytes, //横一列のバイト数(width*4)
-                                 System.Drawing.Imaging.PixelFormat.Format32bppArgb,//カラーフォーマット(RGBA)
-                                 (IntPtr)pin.Pointer); //各ピクセルの色情報
-                            //ファイルに保存
-                            //colorBitmap.Save(@"保存したいパス\" + System.DateTime.Now.ToString("yyyyMMddhhmmss") + ".png", System.Drawing.Imaging.ImageFormat.Png);
-                            resultBitmapBox.Image = colorBitmap;
-                            colorImage.Dispose();
-                            pin.Dispose();
-
-                        }
-                    }*/
-
-
                     //Depth画像を取得
                     Image depthImage = capture.Depth;
                     //Depth画像の各ピクセルの値(奥行)のみを取得
@@ -278,13 +229,13 @@ namespace KinectImageConvertSender
                     //Save
                     outDst.SaveImage(TempImageFilePath);
 
-                    //await imageRecognition.ImageRecognitionToFilePath(TempImageFilePath);
                     List<ResultStruct> result = imageRecognition.ImageRecognitionToFilePath(TempImageFilePath);
                     
+                    //デバッグ用
                     Console.WriteLine("--------------------------");
                     foreach ( ResultStruct resultStruct in result)
                     {
-                        Console.WriteLine($"{resultStruct.Label} : pos {resultStruct.PosX},{resultStruct.PosY}");
+                        Console.WriteLine($"{resultStruct.Label} : {resultStruct.Confidence} : pos {resultStruct.PosX},{resultStruct.PosY}");
                     }
                     Console.WriteLine("--------------------------");
 
@@ -296,27 +247,6 @@ namespace KinectImageConvertSender
                     {
                         saveFileIndex = 0;
                     }
-
-
-
-                    //最終結果はoutDst
-
-                    //変換チェック
-                    //エンコードチェック
-                    /*  
-                        ImageEncodingParam encodingParam = new ImageEncodingParam(ImwriteFlags.PngBilevel, 0);
-                        var buffer = new byte[outDst.Rows * outDst.Cols * outDst.Channels()];
-                        Cv2.ImEncode(".png", outDst, out buffer, encodingParam);
-                        //デコード
-                        Mat res = Cv2.ImDecode(buffer, ImreadModes.AnyColor);
-                        //ここでbufferをUDPで送信すればよき
-                        if (_isUDPSend)
-                        {
-                            UDPSender.Send(buffer);
-                        }
-                        //チェック用
-                        Cv2.ImShow("result", res);
-                    */
 
                     tempDepthMatBit.Dispose();
                     tempIrMatBit.Dispose();
@@ -336,6 +266,7 @@ namespace KinectImageConvertSender
             //Depth画像の横幅(width)と縦幅(height)を取得
             int width = kinect.GetCalibration().DepthCameraCalibration.ResolutionWidth;
             int height = kinect.GetCalibration().DepthCameraCalibration.ResolutionHeight;
+
             //PictureBoxに貼り付けるBitmap画像を作成。サイズはkinectのDepth画像と同じ
             depthBitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             irBitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
