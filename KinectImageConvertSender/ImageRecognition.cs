@@ -6,6 +6,7 @@
     using ObjectDetection.DataStructures;
     using ObjectDetection;
     using Microsoft.ML;
+    using System.Diagnostics;
 
     public class ImageRecognition
     {
@@ -13,7 +14,8 @@
         string assetsPath;
         string modelFilePath;
         string imagesFolder;
-        string tempImagesFolder;
+        string loadImageRecognition;
+        string tempImages;
         string outputFolder;
 
 
@@ -24,27 +26,27 @@
             //var modelFilePath = Path.Combine(assetsPath, "Model", "TinyYolo2_model.onnx");
             modelFilePath = Path.Combine(assetsPath, "Model", "model.onnx");
             imagesFolder = Path.Combine(assetsPath, "images");
-            tempImagesFolder = Path.Combine(assetsPath, "TempImage");
+            loadImageRecognition = Path.Combine(assetsPath, "ImageRecognition");
+            tempImages = Path.Combine(assetsPath, "TempImage");
             outputFolder = Path.Combine(assetsPath, "images", "output");
 
         }
 
 
-        public void ImageRecognitionToFilePath(string ImageFilePath)
+        public List<ResultStruct> ImageRecognitionToFilePath(string ImageFilePath)
         {
             // Initialize MLContext
             MLContext mlContext = new MLContext();
+            List<ResultStruct> results = new List<ResultStruct>();
 
             try
             {
                 // Load Data
-                IEnumerable<ImageNetData> images = ImageNetData.ReadFromFile(imagesFolder);
+                IEnumerable<ImageNetData> images = ImageNetData.ReadFromFile(ImageFilePath);
                 IDataView imageDataView = mlContext.Data.LoadFromEnumerable(images);
 
-                Console.WriteLine(assetsPath);
-
                 // Create instance of model scorer
-                var modelScorer = new OnnxModelScorer(imagesFolder, modelFilePath, mlContext);
+                var modelScorer = new OnnxModelScorer(ImageFilePath, modelFilePath, mlContext);
 
                 // Use model to score data
                 IEnumerable<float[]> probabilities = modelScorer.Score(imageDataView);
@@ -58,14 +60,17 @@
                     //.5Fが表示するスコアの値
                     .Select(boxes => parser.FilterBoundingBoxes(boxes, 5, .5F));
 
-
+                //基本的にimages.Countは1のはずなので複数回回す意味はないが2以上になったときに最後に処理した(indexが大きい最新のもの)の値を返すのに使用
                 for (var i = 0; i < images.Count(); i++)
                 {
                     string imageFileName = images.ElementAt(i).Label;
                     IList<YoloBoundingBox> detectedObjects = boundingBoxes.ElementAt(i);
-
-                    DrawBoundingBox(detectedObjects);
+                    results = DrawBoundingBox(detectedObjects);
                 }
+
+                //画像認識済みの画像ファイルを移動
+                string newFilePath = Path.Combine(tempImages, Path.GetFileName(ImageFilePath));
+                File.Move(ImageFilePath, newFilePath);
 
                 //以降描画処理
                 // Draw bounding boxes for detected objects in each of the images
@@ -86,7 +91,8 @@
                 Console.WriteLine(ex.ToString());
             }
 
-            Console.WriteLine(imagesFolder);
+            return results;
+
         }
         string GetAbsolutePath(string relativePath)
         {
@@ -148,7 +154,6 @@
                     //認識した座標を出力
                     var posX = x + width / 2;
                     var posY = y + width / 2;
-                    Console.WriteLine($"{box.Label} and its Confidence score: {box.Confidence}  Position x :{posX} y:{posY}");
                 }
             }
 
@@ -185,7 +190,6 @@
                 //認識した座標を出力
                 var posX = x + width / 2;
                 var posY = y + width / 2;
-                Console.WriteLine($"{box.Label} and its Confidence score: {box.Confidence}  Position x :{posX} y:{posY}");
                 results.Add(new ResultStruct(box.Label, posX, posY, box.Confidence));
                 /*
                                     // Bounding Box Text
@@ -217,7 +221,7 @@
                                         //認識した座標を出力
                                         var posX = x + width / 2;
                                         var posY = y + width / 2;
-                                        Console.WriteLine($"{box.Label} and its Confidence score: {box.Confidence}  Position x :{posX} y:{posY}");
+                                        //1console.writeline($"{box.Label} and its Confidence score: {box.Confidence}  Position x :{posX} y:{posY}");
                                     }*/
             }
             return results;
@@ -226,14 +230,11 @@
 
         void LogDetectedObjects(string imageName, IList<YoloBoundingBox> boundingBoxes)
         {
-            Console.WriteLine($".....The objects in the image {imageName} are detected as below....");
 
             foreach (var box in boundingBoxes)
             {
-                //Console.WriteLine($"{box.Label} and its Confidence score: {box.Confidence}");
             }
 
-            Console.WriteLine("");
         }
 
     }

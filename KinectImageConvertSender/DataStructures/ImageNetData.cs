@@ -15,11 +15,13 @@ namespace ObjectDetection.DataStructures
 
         public static IEnumerable<ImageNetData> ReadFromFile(string imageFolder)
         {
-            //.mdファイルではないファイル一覧を取得し、IEnumerable<ImageNetData>にファイル名とラベルを入れる
-            return Directory
-                .GetFiles(imageFolder)
-                .Where(filePath => Path.GetExtension(filePath) != ".md")
-                .Select(filePath => new ImageNetData { ImagePath = filePath, Label = Path.GetFileName(filePath) });
+            yield return new ImageNetData { ImagePath = imageFolder, Label = Path.GetFileName(imageFolder) };
+
+            /*Directory
+            .GetFiles(imageFolder)
+            //絶対パスが返ってくる
+            .Where(filePath => Path.GetExtension(filePath) != ".md")
+            .Select(filePath => new ImageNetData { ImagePath = filePath, Label = Path.GetFileName(filePath) });*/
         }
     }
 }

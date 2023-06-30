@@ -15,6 +15,7 @@ namespace KinectImageConvertSender
     using OpenCvSharp.Extensions;
     using Microsoft.VisualBasic.ApplicationServices;
     using System.Net.NetworkInformation;
+    using System.Runtime.InteropServices;
 
     public partial class Form1 : Form
     {
@@ -56,9 +57,23 @@ namespace KinectImageConvertSender
 
         uint saveFileIndex = 0;
         ImageRecognition imageRecognition;
+
+        string assetsRelativePath = @"../../../../assets";
+
+
+        //デバッグ用
+        [DllImport("kernel32.dll")]
+        private static extern bool AllocConsole();
+
+        //デバッグ用
+        [DllImport("kernel32.dll")]
+        private static extern bool FreeConsole();
         public Form1()
         {
             InitializeComponent();
+            //デバッグ用
+            AllocConsole();
+
             InitKinect();
             //Kinectの設定情報に基づいてBitmap関連情報を初期化
             InitBitmap();
@@ -256,15 +271,22 @@ namespace KinectImageConvertSender
                     resultBitmapBox.Image = BitmapConverter.ToBitmap(outDst);
 
                     Cv2.ImShow("result", outDst);
-                    var assetsRelativePath = @"../../../../assets";
+                    
                     var assetsPath = GetAbsolutePath(assetsRelativePath);
                     var TempImageFilePath = Path.Combine(assetsPath, "TempImage", $"{saveFileIndex}.jpeg");
 
                     //Save
                     outDst.SaveImage(TempImageFilePath);
 
-                    await imageRecognition.ImageRecognitionToFilePath(TempImageFilePath);
-
+                    //await imageRecognition.ImageRecognitionToFilePath(TempImageFilePath);
+                    List<ResultStruct> result = imageRecognition.ImageRecognitionToFilePath(TempImageFilePath);
+                    
+                    Console.WriteLine("--------------------------");
+                    foreach ( ResultStruct resultStruct in result)
+                    {
+                        Console.WriteLine($"{resultStruct.Label} : pos {resultStruct.PosX},{resultStruct.PosY}");
+                    }
+                    Console.WriteLine("--------------------------");
 
                     if (saveFileIndex <= 100)
                     {
