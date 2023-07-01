@@ -1,10 +1,10 @@
 ﻿using System.Drawing;
 
-namespace ObjectDetection.YoloParser
+namespace ObjectDetection.CustomVisionParser
 {
     public class BoundingBoxDimensions : DimensionsBase { }
 
-    public class YoloBoundingBox
+    public class CustomVisionBoundingBox
     {
         public BoundingBoxDimensions Dimensions { get; set; }
 

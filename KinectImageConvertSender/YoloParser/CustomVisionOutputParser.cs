@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-
-namespace ObjectDetection.YoloParser
+﻿namespace ObjectDetection.CustomVisionParser
 {
-    class YoloOutputParser
+    class CustomVisionOutputParser
     {
         class CellDimensions : DimensionsBase { }
 
@@ -15,7 +9,7 @@ namespace ObjectDetection.YoloParser
         public const int CHANNEL_COUNT = 125;
         public const int BOXES_PER_CELL = 5;
         public const int BOX_INFO_FEATURE_COUNT = 5;
-        //public const int CLASS_COUNT = 20;
+        //TODO:ONNXモデルを更新したら変更する
         public const int CLASS_COUNT = 2;
         public const float CELL_WIDTH = 32;
         public const float CELL_HEIGHT = 32;
@@ -27,13 +21,10 @@ namespace ObjectDetection.YoloParser
             1.08F, 1.19F, 3.42F, 4.41F, 6.63F, 11.38F, 9.42F, 5.11F, 16.62F, 10.52F
         };
 
+        //TODO:ONNXモデルを更新したら変更する
         private string[] labels = new string[]
         {
-            /*            "aeroplane", "bicycle", "bird", "boat", "bottle",
-                        "bus", "car", "cat", "chair", "cow",
-                        "diningtable", "dog", "horse", "motorbike", "person",
-                        "pottedplant", "sheep", "sofa", "train", "tvmonitor"*/
-    "Cane","Stick"
+            "Cane","Stick"
         };
 
         private static Color[] classColors = new Color[]
@@ -153,9 +144,9 @@ namespace ObjectDetection.YoloParser
             return intersectionArea / (areaA + areaB - intersectionArea);
         }
 
-        public IList<YoloBoundingBox> ParseOutputs(float[] yoloModelOutputs, float threshold = .3F)
+        public IList<CustomVisionBoundingBox> ParseOutputs(float[] yoloModelOutputs, float threshold = .3F)
         {
-            var boxes = new List<YoloBoundingBox>();
+            var boxes = new List<CustomVisionBoundingBox>();
 
             for (int row = 0; row < ROW_COUNT; row++)
             {
@@ -182,7 +173,7 @@ namespace ObjectDetection.YoloParser
                         if (topScore < threshold)
                             continue;
 
-                        boxes.Add(new YoloBoundingBox()
+                        boxes.Add(new CustomVisionBoundingBox()
                         {
                             Dimensions = new BoundingBoxDimensions
                             {
@@ -201,7 +192,7 @@ namespace ObjectDetection.YoloParser
             return boxes;
         }
 
-        public IList<YoloBoundingBox> FilterBoundingBoxes(IList<YoloBoundingBox> boxes, int limit, float threshold)
+        public IList<CustomVisionBoundingBox> FilterBoundingBoxes(IList<CustomVisionBoundingBox> boxes, int limit, float threshold)
         {
             var activeCount = boxes.Count;
             var isActiveBoxes = new bool[boxes.Count];
@@ -213,7 +204,7 @@ namespace ObjectDetection.YoloParser
                                 .OrderByDescending(b => b.Box.Confidence)
                                 .ToList();
 
-            var results = new List<YoloBoundingBox>();
+            var results = new List<CustomVisionBoundingBox>();
 
             for (int i = 0; i < boxes.Count; i++)
             {

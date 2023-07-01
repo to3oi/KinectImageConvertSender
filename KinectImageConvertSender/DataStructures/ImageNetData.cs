@@ -13,11 +13,11 @@ namespace ObjectDetection.DataStructures
         /// <summary>
         /// 画像のパスを渡すとそのパスのImageNetDataを生成して返す
         /// </summary>
-        /// <param name="imageFolder"></param>
+        /// <param name="ImagePath"></param>
         /// <returns></returns>
-        public static IEnumerable<ImageNetData> ReadFromFile(string imageFolder)
+        public static IEnumerable<ImageNetData> ReadFromFile(string ImagePath)
         {
-            yield return new ImageNetData { ImagePath = imageFolder, Label = Path.GetFileName(imageFolder) };
+            yield return new ImageNetData { ImagePath = ImagePath, Label = Path.GetFileName(ImagePath) };
         }
     }
 }

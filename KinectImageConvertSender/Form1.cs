@@ -8,8 +8,6 @@ using System.Drawing.Imaging;
 using static KinectImageConvertSender.FilePath;
 using Image = Microsoft.Azure.Kinect.Sensor.Image;
 using BitmapData = System.Drawing.Imaging.BitmapData;
-using static KinectImageConvertSender.SendMessage;
-using MessagePack;
 
 namespace KinectImageConvertSender
 {

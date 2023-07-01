@@ -1,4 +1,4 @@
-﻿using ObjectDetection.YoloParser;
+﻿using ObjectDetection.CustomVisionParser;
 using ObjectDetection.DataStructures;
 using ObjectDetection;
 using Microsoft.ML;
@@ -10,9 +10,7 @@ namespace KinectImageConvertSender
     /// </summary>
     public class ImageRecognition
     {
-        public ImageRecognition()
-        {
-        }
+        public ImageRecognition(){}
 
 
         public List<ResultStruct> ImageRecognitionToFilePath(string _imageFilePath)
@@ -34,7 +32,7 @@ namespace KinectImageConvertSender
                 IEnumerable<float[]> probabilities = modelScorer.Score(imageDataView);
 
                 // Post-process model output
-                YoloOutputParser parser = new YoloOutputParser();
+                CustomVisionOutputParser parser = new CustomVisionOutputParser();
 
                 var boundingBoxes =
                     probabilities
@@ -46,7 +44,7 @@ namespace KinectImageConvertSender
                 for (var i = 0; i < images.Count(); i++)
                 {
                     string imageFileName = images.ElementAt(i).Label;
-                    IList<YoloBoundingBox> detectedObjects = boundingBoxes.ElementAt(i);
+                    IList<CustomVisionBoundingBox> detectedObjects = boundingBoxes.ElementAt(i);
                     results = CalculateBoundingBox(detectedObjects);
                 }
             }
@@ -59,10 +57,10 @@ namespace KinectImageConvertSender
 
         }
 
+        //KinectのDepth,IRのサイズ(固定値)
         int originalImageHeight = 576;
         int originalImageWidth = 640;
-
-        List<ResultStruct> CalculateBoundingBox(IList<YoloBoundingBox> filteredBoundingBoxes)
+        List<ResultStruct> CalculateBoundingBox(IList<CustomVisionBoundingBox> filteredBoundingBoxes)
         {
 
             List<ResultStruct> results = new List<ResultStruct>();

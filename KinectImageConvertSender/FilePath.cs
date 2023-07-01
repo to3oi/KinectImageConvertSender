@@ -1,5 +1,8 @@
 ﻿namespace KinectImageConvertSender
 {
+    /// <summary>
+    /// ファイルの参照を管理
+    /// </summary>
     public class FilePath
     {
         public static string assetsRelativePath = @"assets";

@@ -1,4 +1,4 @@
-﻿namespace ObjectDetection.YoloParser
+﻿namespace ObjectDetection.CustomVisionParser
 {
     public class DimensionsBase
     {
