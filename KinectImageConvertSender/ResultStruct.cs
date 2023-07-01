@@ -1,5 +1,8 @@
-﻿namespace KinectImageConvertSender
+﻿using MessagePack;
+
+namespace KinectImageConvertSender
 {
+    [MessagePackObject(true)]
     public struct ResultStruct
     {
         public string Label { get; set; }

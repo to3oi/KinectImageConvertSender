@@ -1,21 +1,17 @@
 ﻿using Microsoft.ML;
 using Microsoft.ML.Data;
 using ObjectDetection.DataStructures;
-using ObjectDetection.YoloParser;
 
 namespace ObjectDetection
 {
     class OnnxModelScorer
     {
-        private readonly string imagesFolder;
         private readonly string modelLocation;
         private readonly MLContext mlContext;
 
-        private IList<YoloBoundingBox> _boundingBoxes = new List<YoloBoundingBox>();
 
-        public OnnxModelScorer(string imagesFolder, string modelLocation, MLContext mlContext)
+        public OnnxModelScorer(string modelLocation, MLContext mlContext)
         {
-            this.imagesFolder = imagesFolder;
             this.modelLocation = modelLocation;
             this.mlContext = mlContext;
         }
@@ -28,16 +24,10 @@ namespace ObjectDetection
 
         public struct TinyYoloModelSettings
         {
-            // for checking Tiny yolo2 Model input and  output  parameter names,
-            //you can use tools like Netron, 
-            // which is installed by Visual Studio AI Tools
-
             // input tensor name
-            //public const string ModelInput = "image";
             public const string ModelInput = "data";
 
             // output tensor name
-            //public const string ModelOutput = "grid";
             public const string ModelOutput = "model_outputs0";
         }
 
@@ -47,13 +37,6 @@ namespace ObjectDetection
             var data = mlContext.Data.LoadFromEnumerable(new List<ImageNetData>());
 
             // Define scoring pipeline
-            //not Custom Vision pipeline settting
-            /* var pipeline = mlContext.Transforms.LoadImages(outputColumnName: "image", imageFolder: "", inputColumnName: nameof(ImageNetData.ImagePath))
-                          .Append(mlContext.Transforms.ResizeImages(outputColumnName: "image", imageWidth: ImageNetSettings.imageWidth, imageHeight: ImageNetSettings.imageHeight, inputColumnName: "image"))
-                          .Append(mlContext.Transforms.ExtractPixels(outputColumnName: "image"))
-                          .Append(mlContext.Transforms.ApplyOnnxModel(modelFile: modelLocation, outputColumnNames: new[] { TinyYoloModelSettings.ModelOutput }, inputColumnNames: new[] { TinyYoloModelSettings.ModelInput }));
-            */
-
             var pipeline = mlContext.Transforms.LoadImages
                 (outputColumnName: "data", imageFolder: "", inputColumnName: nameof(ImageNetData.ImagePath))
                           .Append(mlContext.Transforms.ResizeImages(outputColumnName: "data", imageWidth: ImageNetSettings.imageWidth, imageHeight: ImageNetSettings.imageHeight, inputColumnName: "data"))

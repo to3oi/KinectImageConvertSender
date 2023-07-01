@@ -1,12 +1,15 @@
 using Microsoft.Azure.Kinect.Sensor;
-using Image = Microsoft.Azure.Kinect.Sensor.Image;
-using BitmapData = System.Drawing.Imaging.BitmapData;
-using PixelFormat = System.Drawing.Imaging.PixelFormat;
 using OpenCvSharp;
 using UnityEasyNet;
 using System.Net;
 using OpenCvSharp.Extensions;
 using System.Runtime.InteropServices;
+using System.Drawing.Imaging;
+using static KinectImageConvertSender.FilePath;
+using Image = Microsoft.Azure.Kinect.Sensor.Image;
+using BitmapData = System.Drawing.Imaging.BitmapData;
+using static KinectImageConvertSender.SendMessage;
+using MessagePack;
 
 namespace KinectImageConvertSender
 {
@@ -46,9 +49,6 @@ namespace KinectImageConvertSender
         uint saveFileIndex = 0;
         ImageRecognition imageRecognition;
 
-        string assetsRelativePath = @"../../../../assets";
-
-
         //デバッグ用
         [DllImport("kernel32.dll")]
         private static extern bool AllocConsole();
@@ -81,20 +81,38 @@ namespace KinectImageConvertSender
 
             imageRecognition = new ImageRecognition();
 
+            /*SendMessage sendMessage = new SendMessage();
+            MyClass myClass = new MyClass();
+            byte[] bytes = MessagePackSerializer.Serialize(myClass);
+
+            MyClass mc2 = MessagePackSerializer.Deserialize<MyClass>(bytes);
+
+            //Console.WriteLine($"{mc2.FirstName},{mc2.LastName}");
+            Console.WriteLine($"{mc2.result.Count}");*/
+
+            /*List<ResultStruct> results = new List<ResultStruct>()
+            { new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
+            new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } };
+*/
+            ResultStruct results = new ResultStruct { Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f };
+
+            byte[] serializedData = MessagePackSerializer.Serialize(results);
+
+            // デシリアライズ
+            ResultStruct deserializedList = MessagePackSerializer.Deserialize<ResultStruct>(serializedData);
+            
+            
+            Console.WriteLine($"{deserializedList.Label},{deserializedList.PosX},{deserializedList.PosY},{deserializedList.Confidence}");
+
+
+
+            /*            foreach (var result in deserializedList)
+                        {
+                            Console.WriteLine($"{result.Label},{result.PosX},{result.PosY},{result.Confidence}");
+                        }*/
             //(追加)初期化が終わったのでデータ取得開始
-            Task t = KinectLoop();
+            //Task t = KinectLoop();
         }
-
-        string GetAbsolutePath(string relativePath)
-        {
-            FileInfo _dataRoot = new FileInfo(typeof(Program).Assembly.Location);
-            string assemblyFolderPath = _dataRoot.Directory.FullName;
-
-            string fullPath = Path.Combine(assemblyFolderPath, relativePath);
-
-            return fullPath;
-        }
-
 
         //(追加)Kinectからデータを取得して表示するメソッド
         private async Task KinectLoop()
@@ -105,12 +123,13 @@ namespace KinectImageConvertSender
                 //kinectから新しいデータをもらう
                 using (Capture capture = await Task.Run(() => kinect.GetCapture()).ConfigureAwait(true))
                 {
+                    #region Depth
                     //Depth画像を取得
                     Image depthImage = capture.Depth;
                     //Depth画像の各ピクセルの値(奥行)のみを取得
                     ushort[] depthArray = depthImage.GetPixels<ushort>().ToArray();
                     //depthBitmapの各画素に値を書き込む準備
-                    BitmapData bitmapData = depthBitmap.LockBits(new Rectangle(0, 0, depthBitmap.Width, depthBitmap.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+                    BitmapData bitmapData = depthBitmap.LockBits(new Rectangle(0, 0, depthBitmap.Width, depthBitmap.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
                     unsafe
                     {
                         //各ピクセルの値へのポインタ
@@ -120,7 +139,6 @@ namespace KinectImageConvertSender
                         //一ピクセルずつ処理
                         for (int i = 0; i < depthArray.Length; i++)
                         {
-                            //500～5000mmを0～255に変換
                             depth = 255 - (int)(255 * (depthArray[i] - _depthDistanceMin) / _depthDistanceMax);
                             if (depth < 0)
                             {
@@ -143,15 +161,16 @@ namespace KinectImageConvertSender
                     //pictureBoxに画像を貼り付け
                     depthBitmapBox.Image = depthBitmap;
 
+                    #endregion
 
-
-
+                    #region IR
                     //IR画像を取得
                     Image irImage = capture.IR;
-                    //Depth画像の各ピクセルの値(奥行)のみを取得
+                    //IR画像の各ピクセルの値(奥行)のみを取得
                     ushort[] irArray = irImage.GetPixels<ushort>().ToArray();
-                    //depthBitmapの各画素に値を書き込む準備
-                    BitmapData irData = irBitmap.LockBits(new Rectangle(0, 0, irBitmap.Width, irBitmap.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+                    //irBitmapの各画素に値を書き込む準備
+                    BitmapData irData = irBitmap.LockBits(new Rectangle(0, 0, irBitmap.Width, irBitmap.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+                    
                     unsafe
                     {
                         //各ピクセルの値へのポインタ
@@ -161,7 +180,6 @@ namespace KinectImageConvertSender
                         //一ピクセルずつ処理
                         for (int i = 0; i < irArray.Length; i++)
                         {
-                            //500～5000mmを0～255に変換
                             ir = 255 - (int)(255 * (irArray[i] - _irDistanceMin) / _irDistanceMax);
                             if (ir < 0)
                             {
@@ -184,13 +202,12 @@ namespace KinectImageConvertSender
                     //pictureBoxに画像を貼り付け
                     irBitmapBox.Image = irBitmap;
 
-                    //----------------------------------------------------------------------------------------------------------//
+                    #endregion
 
-
-                    //以下マスク処理
+                    #region Mask
                     //深度カメラの処理
                     Mat depthMat = new Mat();
-                    depthMat = OpenCvSharp.Extensions.BitmapConverter.ToMat(depthBitmap);
+                    depthMat = BitmapConverter.ToMat(depthBitmap);
                     depthMat.Reshape(1);
 
                     //深度カメラの画像のチャンネル数とタイプを変更
@@ -198,13 +215,12 @@ namespace KinectImageConvertSender
                     Cv2.CvtColor(depthMat, tempDepthMatGray, ColorConversionCodes.RGB2GRAY);
                     depthMat.Dispose();
                     Mat tempDepthMatBit = new Mat();
-                    Cv2.Threshold(tempDepthMatGray, tempDepthMatBit, _depthThresholdMin, _depthThresholdMax,
-                        ThresholdTypes.Binary);
+                    Cv2.Threshold(tempDepthMatGray, tempDepthMatBit, _depthThresholdMin, _depthThresholdMax,ThresholdTypes.Binary);
                     tempDepthMatGray.Dispose();
 
                     //IRカメラの処理
                     Mat irMat = new Mat();
-                    irMat = OpenCvSharp.Extensions.BitmapConverter.ToMat(irBitmap);
+                    irMat = BitmapConverter.ToMat(irBitmap);
                     irMat.Reshape(1);
 
                     //IRカメラの画像のチャンネル数とタイプを変更
@@ -221,23 +237,19 @@ namespace KinectImageConvertSender
 
                     resultBitmapBox.Image = BitmapConverter.ToBitmap(outDst);
 
+                    #endregion
+
+                    //デバッグ
                     Cv2.ImShow("result", outDst);
-                    
-                    var assetsPath = GetAbsolutePath(assetsRelativePath);
+
+                    //画像として保存するパスを作成
                     var TempImageFilePath = Path.Combine(assetsPath, "TempImage", $"{saveFileIndex}.jpeg");
 
-                    //Save
+                    //保存
                     outDst.SaveImage(TempImageFilePath);
 
-                    List<ResultStruct> result = imageRecognition.ImageRecognitionToFilePath(TempImageFilePath);
-                    
-                    //デバッグ用
-                    Console.WriteLine("--------------------------");
-                    foreach ( ResultStruct resultStruct in result)
-                    {
-                        Console.WriteLine($"{resultStruct.Label} : {resultStruct.Confidence} : pos {resultStruct.PosX},{resultStruct.PosY}");
-                    }
-                    Console.WriteLine("--------------------------");
+                    //非同期で画像認識を実行
+                    Task.Run(() => ImageRecognition(TempImageFilePath));
 
                     if (saveFileIndex <= 100)
                     {
@@ -251,7 +263,6 @@ namespace KinectImageConvertSender
                     tempDepthMatBit.Dispose();
                     tempIrMatBit.Dispose();
                     capture.Dispose();
-
                 }
                 //表示を更新
                 this.Update();
@@ -259,6 +270,24 @@ namespace KinectImageConvertSender
             //ループが終了したらKinectも停止
             kinect.StopCameras();
         }
+
+        /// <summary>
+        /// 引数のパスに存在する画像を画像認識にかける関数
+        /// </summary>
+        /// <param name="TempImageFilePath"></param>
+        private void ImageRecognition(string TempImageFilePath)
+        {
+            List<ResultStruct> result = imageRecognition.ImageRecognitionToFilePath(TempImageFilePath);
+
+            //デバッグ用
+            Console.WriteLine("--------------------------");
+            foreach (ResultStruct resultStruct in result)
+            {
+                Console.WriteLine($"{resultStruct.Label} : {resultStruct.Confidence} : pos {resultStruct.PosX},{resultStruct.PosY}");
+            }
+            Console.WriteLine("--------------------------");
+        }
+
 
         //Bitmap画像に関する初期設定
         private void InitBitmap()
@@ -271,15 +300,14 @@ namespace KinectImageConvertSender
             depthBitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             irBitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
         }
-        //Kinectの初期化(Form1コンストラクタから呼び出す)
+
+        //Kinectの初期化
         private void InitKinect()
         {
-            //0番目のKinectと接続
             kinect = Device.Open(0);
-            //Kinectの各種モードを設定して動作開始(設定内容自体は今回は特に考えなくてOK)
             kinect.StartCameras(new DeviceConfiguration
             {
-                ColorFormat = ImageFormat.ColorBGRA32,
+                ColorFormat = Microsoft.Azure.Kinect.Sensor.ImageFormat.ColorBGRA32,
                 ColorResolution = ColorResolution.R720p,
                 DepthMode = DepthMode.NFOV_Unbinned,
                 SynchronizedImagesOnly = true,

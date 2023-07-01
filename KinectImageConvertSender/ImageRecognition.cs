@@ -2,21 +2,16 @@
 using ObjectDetection.DataStructures;
 using ObjectDetection;
 using Microsoft.ML;
-
+using static KinectImageConvertSender.FilePath;
 namespace KinectImageConvertSender
 {
+    /// <summary>
+    /// 画像認識を実行するためのクラス
+    /// </summary>
     public class ImageRecognition
     {
-        string assetsRelativePath;
-        string assetsPath;
-        string modelFilePath;
-
         public ImageRecognition()
         {
-            assetsRelativePath = @"../../../../assets";
-            assetsPath = GetAbsolutePath(assetsRelativePath);
-            //var modelFilePath = Path.Combine(assetsPath, "Model", "TinyYolo2_model.onnx");
-            modelFilePath = Path.Combine(assetsPath, "Model", "model.onnx");
         }
 
 
@@ -33,7 +28,7 @@ namespace KinectImageConvertSender
                 IDataView imageDataView = mlContext.Data.LoadFromEnumerable(images);
 
                 // Create instance of model scorer
-                var modelScorer = new OnnxModelScorer(_imageFilePath, modelFilePath, mlContext);
+                var modelScorer = new OnnxModelScorer(modelFilePath, mlContext);
 
                 // Use model to score data
                 IEnumerable<float[]> probabilities = modelScorer.Score(imageDataView);
@@ -52,12 +47,8 @@ namespace KinectImageConvertSender
                 {
                     string imageFileName = images.ElementAt(i).Label;
                     IList<YoloBoundingBox> detectedObjects = boundingBoxes.ElementAt(i);
-                    results = DrawBoundingBox(detectedObjects);
+                    results = CalculateBoundingBox(detectedObjects);
                 }
-
-/*                //画像認識済みの画像ファイルを移動
-                string newFilePath = Path.Combine(tempImagesFolder, Path.GetFileName(_imageFilePath));
-                File.Move(_imageFilePath, newFilePath);*/
             }
             catch (Exception ex)
             {
@@ -67,22 +58,14 @@ namespace KinectImageConvertSender
             return results;
 
         }
-        string GetAbsolutePath(string relativePath)
-        {
-            FileInfo _dataRoot = new FileInfo(typeof(Program).Assembly.Location);
-            string assemblyFolderPath = _dataRoot.Directory.FullName;
 
-            string fullPath = Path.Combine(assemblyFolderPath, relativePath);
+        int originalImageHeight = 576;
+        int originalImageWidth = 640;
 
-            return fullPath;
-        }
-
-        List<ResultStruct> DrawBoundingBox(IList<YoloBoundingBox> filteredBoundingBoxes)
+        List<ResultStruct> CalculateBoundingBox(IList<YoloBoundingBox> filteredBoundingBoxes)
         {
 
             List<ResultStruct> results = new List<ResultStruct>();
-            var originalImageHeight = 576;
-            var originalImageWidth = 640;
 
             foreach (var box in filteredBoundingBoxes)
             {
@@ -106,16 +89,5 @@ namespace KinectImageConvertSender
             }
             return results;
         }
-
-
-        void LogDetectedObjects(string imageName, IList<YoloBoundingBox> boundingBoxes)
-        {
-
-            foreach (var box in boundingBoxes)
-            {
-            }
-
-        }
-
     }
 }
