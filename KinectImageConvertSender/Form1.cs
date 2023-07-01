@@ -304,7 +304,7 @@ namespace KinectImageConvertSender
         /// <param name="TempImageFilePath"></param>
         private void ImageRecognition(string TempImageFilePath)
         {
-            List<ResultStruct> result = imageRecognition.ImageRecognitionToFilePath(TempImageFilePath);
+            List<ResultStruct> results = imageRecognition.ImageRecognitionToFilePath(TempImageFilePath);
 
             //デバッグ用
             Console.WriteLine("--------------------------");
@@ -313,6 +313,13 @@ namespace KinectImageConvertSender
                 Console.WriteLine($"{resultStruct.Label} : {resultStruct.Confidence} : pos {resultStruct.PosX},{resultStruct.PosY}");
             }
             Console.WriteLine("--------------------------");
+
+            //送信
+            if (_isUDPSend)
+            {
+                byte[] serializedData = MessagePackSerializer.Serialize(results);
+                UDPSender.Send(serializedData);
+            }
         }
 
 
