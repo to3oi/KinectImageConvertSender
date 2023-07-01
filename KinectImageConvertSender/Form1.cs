@@ -308,7 +308,7 @@ namespace KinectImageConvertSender
 
             //デバッグ用
             Console.WriteLine("--------------------------");
-            foreach (ResultStruct resultStruct in result)
+            foreach (ResultStruct resultStruct in results)
             {
                 Console.WriteLine($"{resultStruct.Label} : {resultStruct.Confidence} : pos {resultStruct.PosX},{resultStruct.PosY}");
             }
