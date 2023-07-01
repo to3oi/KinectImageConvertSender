@@ -58,9 +58,10 @@ namespace KinectImageConvertSender
         private static extern bool FreeConsole();
         public Form1()
         {
-            InitializeComponent();
             //デバッグ用
             AllocConsole();
+
+            InitializeComponent();
 
             InitKinect();
             //Kinectの設定情報に基づいてBitmap関連情報を初期化
@@ -73,7 +74,6 @@ namespace KinectImageConvertSender
             {
                 if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                 {
-                    //mLocalIPAddress.text = ip.ToString();
                     PCViewIpAdress.Text = ip.ToString();
                     break;
                 }
@@ -81,37 +81,28 @@ namespace KinectImageConvertSender
 
             imageRecognition = new ImageRecognition();
 
-            /*SendMessage sendMessage = new SendMessage();
-            MyClass myClass = new MyClass();
-            byte[] bytes = MessagePackSerializer.Serialize(myClass);
+            /*MessagePackTest
+            List<ResultStruct> results = new List<ResultStruct>()
+            { 
+                new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
+                new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
+                new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
+                new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
+                new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
+                new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } };
 
-            MyClass mc2 = MessagePackSerializer.Deserialize<MyClass>(bytes);
-
-            //Console.WriteLine($"{mc2.FirstName},{mc2.LastName}");
-            Console.WriteLine($"{mc2.result.Count}");*/
-
-            /*List<ResultStruct> results = new List<ResultStruct>()
-            { new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
-            new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } };
-*/
-            ResultStruct results = new ResultStruct { Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f };
 
             byte[] serializedData = MessagePackSerializer.Serialize(results);
-
             // デシリアライズ
-            ResultStruct deserializedList = MessagePackSerializer.Deserialize<ResultStruct>(serializedData);
-            
-            
-            Console.WriteLine($"{deserializedList.Label},{deserializedList.PosX},{deserializedList.PosY},{deserializedList.Confidence}");
+            List<ResultStruct> deserializedList = MessagePackSerializer.Deserialize<List<ResultStruct>>(serializedData);
 
+            foreach (var result in deserializedList)
+            {
+                Console.WriteLine($"{result.Label},{result.PosX},{result.PosY},{result.Confidence}");
+            }*/
 
-
-            /*            foreach (var result in deserializedList)
-                        {
-                            Console.WriteLine($"{result.Label},{result.PosX},{result.PosY},{result.Confidence}");
-                        }*/
             //(追加)初期化が終わったのでデータ取得開始
-            //Task t = KinectLoop();
+            Task t = KinectLoop();
         }
 
         //(追加)Kinectからデータを取得して表示するメソッド
@@ -170,7 +161,7 @@ namespace KinectImageConvertSender
                     ushort[] irArray = irImage.GetPixels<ushort>().ToArray();
                     //irBitmapの各画素に値を書き込む準備
                     BitmapData irData = irBitmap.LockBits(new Rectangle(0, 0, irBitmap.Width, irBitmap.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-                    
+
                     unsafe
                     {
                         //各ピクセルの値へのポインタ
@@ -215,7 +206,7 @@ namespace KinectImageConvertSender
                     Cv2.CvtColor(depthMat, tempDepthMatGray, ColorConversionCodes.RGB2GRAY);
                     depthMat.Dispose();
                     Mat tempDepthMatBit = new Mat();
-                    Cv2.Threshold(tempDepthMatGray, tempDepthMatBit, _depthThresholdMin, _depthThresholdMax,ThresholdTypes.Binary);
+                    Cv2.Threshold(tempDepthMatGray, tempDepthMatBit, _depthThresholdMin, _depthThresholdMax, ThresholdTypes.Binary);
                     tempDepthMatGray.Dispose();
 
                     //IRカメラの処理
