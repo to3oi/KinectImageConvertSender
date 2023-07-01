@@ -1,13 +1,15 @@
+using MessagePack;
 using Microsoft.Azure.Kinect.Sensor;
 using OpenCvSharp;
-using UnityEasyNet;
-using System.Net;
 using OpenCvSharp.Extensions;
-using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
+using System.Net;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using UnityEasyNet;
 using static KinectImageConvertSender.FilePath;
-using Image = Microsoft.Azure.Kinect.Sensor.Image;
 using BitmapData = System.Drawing.Imaging.BitmapData;
+using Image = Microsoft.Azure.Kinect.Sensor.Image;
 
 namespace KinectImageConvertSender
 {
@@ -56,10 +58,11 @@ namespace KinectImageConvertSender
         private static extern bool FreeConsole();
         public Form1()
         {
-            //デバッグ用
-            AllocConsole();
-
+            //コンポーネントの初期化
             InitializeComponent();
+
+            //Kinectの接続が必要
+#if false
 
             InitKinect();
             //Kinectの設定情報に基づいてBitmap関連情報を初期化
@@ -79,9 +82,47 @@ namespace KinectImageConvertSender
 
             imageRecognition = new ImageRecognition();
 
-            /*MessagePackTest
-            List<ResultStruct> results = new List<ResultStruct>()
-            { 
+
+
+            //(追加)初期化が終わったのでデータ取得開始
+            Task kl = KinectLoop();
+#endif
+            //デバッグ用
+            AllocConsole();
+            //デバッグ
+            Task tsl = TestSendLoop();
+        }
+
+
+        private async Task TestSendLoop()
+        {
+            this.Show();
+            while (loop)
+            {
+                /*MessagePackTest
+                List<ResultStruct> results = new List<ResultStruct>()
+                { 
+                    new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
+                    new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
+                    new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
+                    new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
+                    new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
+                    new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } };
+                
+                
+                byte[] serializedData = MessagePackSerializer.Serialize(results);
+                // デシリアライズ
+                List<ResultStruct> deserializedList = MessagePackSerializer.Deserialize<List<ResultStruct>>(serializedData);
+                
+                foreach (var result in deserializedList)
+                {
+                    Console.WriteLine($"{result.Label},{result.PosX},{result.PosY},{result.Confidence}");
+                }*/
+
+                if (_isUDPSend)
+                {
+                    List<ResultStruct> results = new List<ResultStruct>()
+            {
                 new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
                 new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
                 new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
@@ -90,17 +131,14 @@ namespace KinectImageConvertSender
                 new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } };
 
 
-            byte[] serializedData = MessagePackSerializer.Serialize(results);
-            // デシリアライズ
-            List<ResultStruct> deserializedList = MessagePackSerializer.Deserialize<List<ResultStruct>>(serializedData);
+                    byte[] serializedData = MessagePackSerializer.Serialize(results);
+                    UDPSender.Send(serializedData);
+                }
 
-            foreach (var result in deserializedList)
-            {
-                Console.WriteLine($"{result.Label},{result.PosX},{result.PosY},{result.Confidence}");
-            }*/
-
-            //(追加)初期化が終わったのでデータ取得開始
-            Task t = KinectLoop();
+                //表示を更新
+                this.Update();
+                await Task.Delay(TimeSpan.FromSeconds(1));
+            }
         }
 
         //(追加)Kinectからデータを取得して表示するメソッド
