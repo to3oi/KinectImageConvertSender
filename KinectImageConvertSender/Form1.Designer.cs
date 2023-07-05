@@ -48,7 +48,7 @@ namespace KinectImageConvertSender
             label4 = new Label();
             label7 = new Label();
             resultBitmapBox = new PictureBox();
-            DebugText = new Label();
+            TestButton = new Button();
             ((System.ComponentModel.ISupportInitialize)depthBitmapBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)irBitmapBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)resultBitmapBox).BeginInit();
@@ -57,7 +57,7 @@ namespace KinectImageConvertSender
             // depthBitmapBox
             // 
             depthBitmapBox.Location = new Point(18, 34);
-            depthBitmapBox.Margin = new Padding(4, 4, 4, 4);
+            depthBitmapBox.Margin = new Padding(4);
             depthBitmapBox.Name = "depthBitmapBox";
             depthBitmapBox.Size = new Size(350, 375);
             depthBitmapBox.SizeMode = PictureBoxSizeMode.Zoom;
@@ -67,7 +67,7 @@ namespace KinectImageConvertSender
             // irBitmapBox
             // 
             irBitmapBox.Location = new Point(396, 34);
-            irBitmapBox.Margin = new Padding(4, 4, 4, 4);
+            irBitmapBox.Margin = new Padding(4);
             irBitmapBox.Name = "irBitmapBox";
             irBitmapBox.Size = new Size(350, 375);
             irBitmapBox.SizeMode = PictureBoxSizeMode.Zoom;
@@ -97,7 +97,7 @@ namespace KinectImageConvertSender
             // UDPConectStart
             // 
             UDPConectStart.Location = new Point(399, 716);
-            UDPConectStart.Margin = new Padding(4, 4, 4, 4);
+            UDPConectStart.Margin = new Padding(4);
             UDPConectStart.Name = "UDPConectStart";
             UDPConectStart.Size = new Size(88, 29);
             UDPConectStart.TabIndex = 4;
@@ -208,7 +208,7 @@ namespace KinectImageConvertSender
             // GetConnectIP
             // 
             GetConnectIP.Location = new Point(477, 770);
-            GetConnectIP.Margin = new Padding(4, 4, 4, 4);
+            GetConnectIP.Margin = new Padding(4);
             GetConnectIP.Name = "GetConnectIP";
             GetConnectIP.Size = new Size(193, 23);
             GetConnectIP.TabIndex = 16;
@@ -236,28 +236,30 @@ namespace KinectImageConvertSender
             // resultBitmapBox
             // 
             resultBitmapBox.Location = new Point(18, 459);
-            resultBitmapBox.Margin = new Padding(4, 4, 4, 4);
+            resultBitmapBox.Margin = new Padding(4);
             resultBitmapBox.Name = "resultBitmapBox";
             resultBitmapBox.Size = new Size(350, 375);
             resultBitmapBox.SizeMode = PictureBoxSizeMode.Zoom;
             resultBitmapBox.TabIndex = 18;
             resultBitmapBox.TabStop = false;
             // 
-            // DebugText
+            // TestButton
             // 
-            DebugText.AutoSize = true;
-            DebugText.Location = new Point(796, 34);
-            DebugText.Name = "DebugText";
-            DebugText.Size = new Size(38, 15);
-            DebugText.TabIndex = 20;
-            DebugText.Text = "label8";
+            TestButton.Location = new Point(786, 34);
+            TestButton.Margin = new Padding(4);
+            TestButton.Name = "TestButton";
+            TestButton.Size = new Size(88, 29);
+            TestButton.TabIndex = 20;
+            TestButton.Text = "TestButton";
+            TestButton.UseVisualStyleBackColor = true;
+            TestButton.Click += TestButton_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1215, 890);
-            Controls.Add(DebugText);
+            Controls.Add(TestButton);
             Controls.Add(label7);
             Controls.Add(resultBitmapBox);
             Controls.Add(label4);
@@ -277,7 +279,7 @@ namespace KinectImageConvertSender
             Controls.Add(Depth_Label);
             Controls.Add(irBitmapBox);
             Controls.Add(depthBitmapBox);
-            Margin = new Padding(4, 4, 4, 4);
+            Margin = new Padding(4);
             Name = "Form1";
             Text = "KinectViewAndUDPSender";
             FormClosing += Form1_FormClosing;
@@ -309,7 +311,7 @@ namespace KinectImageConvertSender
         private Label label4;
         private Label label7;
         private PictureBox resultBitmapBox;
-        private Label DebugText;
+        private Button TestButton;
     }
 }
 

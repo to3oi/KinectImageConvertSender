@@ -93,7 +93,7 @@ namespace KinectImageConvertSender
             Task tsl = TestSendLoop();
         }
 
-
+        //デバッグ
         private async Task TestSendLoop()
         {
             this.Show();
@@ -121,14 +121,24 @@ namespace KinectImageConvertSender
 
                 if (_isUDPSend)
                 {
-                    List<ResultStruct> results = new List<ResultStruct>()
-            {
+
+                    double time = DateTime.Now.TimeOfDay.TotalSeconds; // 現在の時間を取得（秒単位）
+
+                    double angle = 2 * Math.PI * time / (24 * 60 * 60); // 時間を角度に変換
+
+                    int x = (int)Math.Cos(angle); // x座標
+                    int y = (int)Math.Sin(angle); // y座標
+                    x *= 500;
+                    y *= 500;
+
+                    List<ResultStruct> results = new List<ResultStruct>(){
+/*                new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
                 new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
                 new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
                 new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
                 new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
-                new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
-                new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } };
+*/
+                new ResultStruct{ Label = "Cane", PosX = x, PosY = y, Confidence = 0.8f } };
 
 
                     byte[] serializedData = MessagePackSerializer.Serialize(results);
@@ -364,5 +374,11 @@ namespace KinectImageConvertSender
             UDPSender = new UDPSender(_ipAdressText, _port);
             _isUDPSend = true;
         }
+
+        private void TestButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
