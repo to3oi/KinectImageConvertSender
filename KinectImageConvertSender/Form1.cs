@@ -2,9 +2,9 @@ using MessagePack;
 using Microsoft.Azure.Kinect.Sensor;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
+using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using UnityEasyNet;
 using static KinectImageConvertSender.FilePath;
@@ -49,24 +49,11 @@ namespace KinectImageConvertSender
         uint saveFileIndex = 0;
         ImageRecognition imageRecognition;
 
-        //デバッグ用
-        [DllImport("kernel32.dll")]
-        private static extern bool AllocConsole();
 
-        //デバッグ用
-        [DllImport("kernel32.dll")]
-        private static extern bool FreeConsole();
         public Form1()
         {
             //コンポーネントの初期化
             InitializeComponent();
-
-            //Kinectの接続が必要
-#if false
-
-            InitKinect();
-            //Kinectの設定情報に基づいてBitmap関連情報を初期化
-            InitBitmap();
 
             //IPv4のアドレスを取得して表示
             IPHostEntry ipHostEntry = Dns.GetHostEntry(Dns.GetHostName());
@@ -80,84 +67,15 @@ namespace KinectImageConvertSender
                 }
             }
 
-            imageRecognition = new ImageRecognition();
-
-
-
-            //(追加)初期化が終わったのでデータ取得開始
-            Task kl = KinectLoop();
-#endif
-            //デバッグ用
-            AllocConsole();
-            //デバッグ
-            Task tsl = TestSendLoop();
         }
 
-        //デバッグ
-        private async Task TestSendLoop()
+
+        //Kinectのデータ更新
+        private async Task KinectUpdate()
         {
-            this.Show();
             while (loop)
             {
-                /*MessagePackTest
-                List<ResultStruct> results = new List<ResultStruct>()
-                { 
-                    new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
-                    new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
-                    new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
-                    new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
-                    new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
-                    new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } };
-                
-                
-                byte[] serializedData = MessagePackSerializer.Serialize(results);
-                // デシリアライズ
-                List<ResultStruct> deserializedList = MessagePackSerializer.Deserialize<List<ResultStruct>>(serializedData);
-                
-                foreach (var result in deserializedList)
-                {
-                    Console.WriteLine($"{result.Label},{result.PosX},{result.PosY},{result.Confidence}");
-                }*/
-
-                if (_isUDPSend)
-                {
-
-                    double time = DateTime.Now.TimeOfDay.TotalSeconds; // 現在の時間を取得（秒単位）
-
-                    double angle = 2 * Math.PI * time / (24 * 60 * 60); // 時間を角度に変換
-
-                    int x = (int)Math.Cos(angle); // x座標
-                    int y = (int)Math.Sin(angle); // y座標
-                    x *= 500;
-                    y *= 500;
-
-                    List<ResultStruct> results = new List<ResultStruct>(){
-/*                new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
-                new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
-                new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
-                new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
-                new ResultStruct{ Label = "test", PosX = 0, PosY = 0, Confidence = 0.5f } ,
-*/
-                new ResultStruct{ Label = "Cane", PosX = x, PosY = y, Confidence = 0.8f } };
-
-
-                    byte[] serializedData = MessagePackSerializer.Serialize(results);
-                    UDPSender.Send(serializedData);
-                }
-
-                //表示を更新
-                this.Update();
-                await Task.Delay(TimeSpan.FromSeconds(1));
-            }
-        }
-
-        //(追加)Kinectからデータを取得して表示するメソッド
-        private async Task KinectLoop()
-        {
-            //loopがtrueの間はデータを取り続ける
-            while (loop)
-            {
-                //kinectから新しいデータをもらう
+                //データの取得
                 using (Capture capture = await Task.Run(() => kinect.GetCapture()).ConfigureAwait(true))
                 {
                     #region Depth
@@ -276,8 +194,8 @@ namespace KinectImageConvertSender
 
                     #endregion
 
-                    //デバッグ
-                    Cv2.ImShow("result", outDst);
+                    /*                    //デバッグ
+                                        Cv2.ImShow("result", outDst);*/
 
                     //画像として保存するパスを作成
                     var TempImageFilePath = Path.Combine(assetsPath, "TempImage", $"{saveFileIndex}.jpeg");
@@ -375,10 +293,92 @@ namespace KinectImageConvertSender
             _isUDPSend = true;
         }
 
-        private void TestButton_Click(object sender, EventArgs e)
+        private void KinectRun_Click(object sender, EventArgs e)
         {
+            InitKinect();
 
+            //Kinectの設定情報に基づいてBitmap関連情報を初期化
+            InitBitmap();
+
+            //画像認識のクラスを初期化
+            imageRecognition = new ImageRecognition();
+
+            //データ取得
+            Task t = KinectUpdate();
         }
 
+        #region デバッグ
+        //デバッグ用
+        [DllImport("kernel32.dll")]
+        private static extern bool AllocConsole();
+
+        //デバッグ用
+        [DllImport("kernel32.dll")]
+        private static extern bool FreeConsole();
+
+        private void DebugSender_Click(object sender, EventArgs e)
+        {
+            //デバッグ用
+            AllocConsole();
+            //デバッグ
+            Task tsl = TestSendLoop();
+        }
+
+
+        //デバッグ
+        double time = 0;
+        private async Task TestSendLoop()
+        {
+            this.Show();
+            stopwatch.Start();
+            while (loop)
+            {
+                if (_isUDPSend)
+                {
+                    TimeSpan deltaTime = GetDeltaTime();
+
+                    time += deltaTime.TotalSeconds; // 現在の時間を取得（秒単位）
+                    Console.WriteLine($"time = {time}");
+
+                    double angle = 2 * Math.PI * time / 60; // 時間を角度に変換
+                    Console.WriteLine($"angle = {angle}");
+
+                    double dx = Math.Cos(angle); // x座標
+                    double dy = Math.Sin(angle); // y座標
+
+                    dx = (dx + 1) / 2;
+                    dy = (dy + 1) / 2;
+                    dx *= 500;
+                    dy *= 500;
+
+                    Console.WriteLine($"dx = {dx},dy = {dy}");
+
+
+                    List<ResultStruct> results = new List<ResultStruct>(){
+                    new ResultStruct{ Label = "Cane", PosX = (int)Math.Round(dx), PosY = (int)Math.Round(dy), Confidence = 0.8f }
+                    };
+
+
+                    byte[] serializedData = MessagePackSerializer.Serialize(results);
+                    UDPSender.Send(serializedData);
+
+                }
+                //表示を更新
+                this.Update();
+                await Task.Delay(TimeSpan.FromSeconds(0.25f));
+            }
+        }
+
+        private static Stopwatch stopwatch = new Stopwatch();
+        private static TimeSpan lastFrameTime;
+        public static TimeSpan GetDeltaTime()
+        {
+            TimeSpan currentTime = stopwatch.Elapsed;
+            TimeSpan deltaTime = currentTime - lastFrameTime;
+            lastFrameTime = currentTime;
+
+            return deltaTime;
+        }
+        #endregion
     }
 }

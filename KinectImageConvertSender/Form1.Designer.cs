@@ -48,7 +48,8 @@ namespace KinectImageConvertSender
             label4 = new Label();
             label7 = new Label();
             resultBitmapBox = new PictureBox();
-            TestButton = new Button();
+            KinectRun = new Button();
+            DebugSender = new Button();
             ((System.ComponentModel.ISupportInitialize)depthBitmapBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)irBitmapBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)resultBitmapBox).BeginInit();
@@ -99,7 +100,7 @@ namespace KinectImageConvertSender
             UDPConectStart.Location = new Point(399, 716);
             UDPConectStart.Margin = new Padding(4);
             UDPConectStart.Name = "UDPConectStart";
-            UDPConectStart.Size = new Size(88, 29);
+            UDPConectStart.Size = new Size(105, 29);
             UDPConectStart.TabIndex = 4;
             UDPConectStart.Text = "UDPConectStart";
             UDPConectStart.UseVisualStyleBackColor = true;
@@ -158,7 +159,7 @@ namespace KinectImageConvertSender
             // PCInfo
             // 
             PCInfo.AutoSize = true;
-            PCInfo.Location = new Point(397, 459);
+            PCInfo.Location = new Point(397, 651);
             PCInfo.Margin = new Padding(4, 0, 4, 0);
             PCInfo.Name = "PCInfo";
             PCInfo.Size = new Size(45, 15);
@@ -168,7 +169,7 @@ namespace KinectImageConvertSender
             // PCViewPort
             // 
             PCViewPort.AutoSize = true;
-            PCViewPort.Location = new Point(436, 500);
+            PCViewPort.Location = new Point(436, 692);
             PCViewPort.Margin = new Padding(4, 0, 4, 0);
             PCViewPort.Name = "PCViewPort";
             PCViewPort.Size = new Size(68, 15);
@@ -178,7 +179,7 @@ namespace KinectImageConvertSender
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(399, 500);
+            label5.Location = new Point(399, 692);
             label5.Margin = new Padding(4, 0, 4, 0);
             label5.Name = "label5";
             label5.Size = new Size(29, 15);
@@ -188,7 +189,7 @@ namespace KinectImageConvertSender
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(399, 479);
+            label6.Location = new Point(399, 671);
             label6.Margin = new Padding(4, 0, 4, 0);
             label6.Name = "label6";
             label6.Size = new Size(17, 15);
@@ -198,7 +199,7 @@ namespace KinectImageConvertSender
             // PCViewIpAdress
             // 
             PCViewIpAdress.AutoSize = true;
-            PCViewIpAdress.Location = new Point(436, 479);
+            PCViewIpAdress.Location = new Point(436, 671);
             PCViewIpAdress.Margin = new Padding(4, 0, 4, 0);
             PCViewIpAdress.Name = "PCViewIpAdress";
             PCViewIpAdress.Size = new Size(91, 15);
@@ -212,6 +213,7 @@ namespace KinectImageConvertSender
             GetConnectIP.Name = "GetConnectIP";
             GetConnectIP.Size = new Size(193, 23);
             GetConnectIP.TabIndex = 16;
+            GetConnectIP.Text = "localhost";
             // 
             // label4
             // 
@@ -243,23 +245,35 @@ namespace KinectImageConvertSender
             resultBitmapBox.TabIndex = 18;
             resultBitmapBox.TabStop = false;
             // 
-            // TestButton
+            // KinectRun
             // 
-            TestButton.Location = new Point(786, 34);
-            TestButton.Margin = new Padding(4);
-            TestButton.Name = "TestButton";
-            TestButton.Size = new Size(88, 29);
-            TestButton.TabIndex = 20;
-            TestButton.Text = "TestButton";
-            TestButton.UseVisualStyleBackColor = true;
-            TestButton.Click += TestButton_Click;
+            KinectRun.Location = new Point(396, 459);
+            KinectRun.Margin = new Padding(4);
+            KinectRun.Name = "KinectRun";
+            KinectRun.Size = new Size(88, 29);
+            KinectRun.TabIndex = 20;
+            KinectRun.Text = "KinectRun";
+            KinectRun.UseVisualStyleBackColor = true;
+            KinectRun.Click += KinectRun_Click;
+            // 
+            // DebugSender
+            // 
+            DebugSender.Location = new Point(492, 459);
+            DebugSender.Margin = new Padding(4);
+            DebugSender.Name = "DebugSender";
+            DebugSender.Size = new Size(88, 29);
+            DebugSender.TabIndex = 21;
+            DebugSender.Text = "DebugSender";
+            DebugSender.UseVisualStyleBackColor = true;
+            DebugSender.Click += DebugSender_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1215, 890);
-            Controls.Add(TestButton);
+            ClientSize = new Size(778, 890);
+            Controls.Add(DebugSender);
+            Controls.Add(KinectRun);
             Controls.Add(label7);
             Controls.Add(resultBitmapBox);
             Controls.Add(label4);
@@ -311,7 +325,8 @@ namespace KinectImageConvertSender
         private Label label4;
         private Label label7;
         private PictureBox resultBitmapBox;
-        private Button TestButton;
+        private Button KinectRun;
+        private Button DebugSender;
     }
 }
 
