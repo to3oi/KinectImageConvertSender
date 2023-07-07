@@ -38,8 +38,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="assets\TempImage\" />
     <Folder Include="assets\ImageRecognition\" />
+    <Folder Include="assets\TempImage\" />
   </ItemGroup>
 
 </Project>

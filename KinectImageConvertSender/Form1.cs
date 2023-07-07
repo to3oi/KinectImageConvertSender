@@ -55,6 +55,8 @@ namespace KinectImageConvertSender
             //コンポーネントの初期化
             InitializeComponent();
 
+            //デバッグ用
+            AllocConsole();
             //IPv4のアドレスを取得して表示
             IPHostEntry ipHostEntry = Dns.GetHostEntry(Dns.GetHostName());
 
@@ -304,6 +306,7 @@ namespace KinectImageConvertSender
             imageRecognition = new ImageRecognition();
 
             //データ取得
+            //TODO:キャンセルと再実行可能なら再実行する処理
             Task t = KinectUpdate();
         }
 
