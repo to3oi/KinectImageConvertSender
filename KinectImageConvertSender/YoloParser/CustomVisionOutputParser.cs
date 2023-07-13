@@ -1,4 +1,6 @@
-﻿namespace ObjectDetection.CustomVisionParser
+﻿using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
+
+namespace ObjectDetection.CustomVisionParser
 {
     class CustomVisionOutputParser
     {
@@ -10,7 +12,7 @@
         public const int BOXES_PER_CELL = 5;
         public const int BOX_INFO_FEATURE_COUNT = 5;
         //TODO:ONNXモデルを更新したら変更する
-        public const int CLASS_COUNT = 2;
+        public const int CLASS_COUNT = 4;
         public const float CELL_WIDTH = 32;
         public const float CELL_HEIGHT = 32;
 
@@ -24,7 +26,10 @@
         //TODO:ONNXモデルを更新したら変更する
         private string[] labels = new string[]
         {
-            "Cane","Stick"
+            "Cross",
+            "Othello",
+            "Ring",
+            "Square"
         };
 
         private static Color[] classColors = new Color[]
