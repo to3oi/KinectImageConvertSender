@@ -36,7 +36,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="assets\Model\model.onnx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="assets\tempimage\.gitkeep">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
