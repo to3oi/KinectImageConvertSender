@@ -71,12 +71,25 @@ namespace KinectImageConvertSender
 
         }
 
+        DateTime preFrame;
 
         //Kinectのデータ更新
         private async Task KinectUpdate()
         {
+            preFrame = DateTime.Now;
             while (loop)
             {
+                //画像認識を15FPSに制限
+                if ((DateTime.Now - preFrame).Milliseconds < 67)
+                {
+                    this.Update();
+                    continue;
+                }
+                else
+                {
+                    preFrame = DateTime.Now;
+                }
+
                 //データの取得
                 using (Capture capture = await Task.Run(() => kinect.GetCapture()).ConfigureAwait(true))
                 {
@@ -206,7 +219,7 @@ namespace KinectImageConvertSender
                     outDst.SaveImage(TempImageFilePath);
 
                     //非同期で画像認識を実行
-                    Task.Run(() => ImageRecognition(TempImageFilePath));
+                    _ = Task.Run(() => ImageRecognition(TempImageFilePath));
 
                     if (saveFileIndex <= 100)
                     {
