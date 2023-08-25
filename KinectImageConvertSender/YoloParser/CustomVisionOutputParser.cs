@@ -1,4 +1,5 @@
-﻿using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
+﻿using System.Text;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 
 namespace ObjectDetection.CustomVisionParser
 {
@@ -27,9 +28,9 @@ namespace ObjectDetection.CustomVisionParser
         private string[] labels = new string[]
         {
             "Cross",
-            "Othello",
-            "Ring",
-            "Square"
+            "Dot",
+            "Line",
+            "Round"
         };
 
         private static Color[] classColors = new Color[]
