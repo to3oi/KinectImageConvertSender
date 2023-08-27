@@ -10,7 +10,7 @@ namespace KinectImageConvertSender
     /// </summary>
     public class ImageRecognition
     {
-        public ImageRecognition(){}
+        public ImageRecognition() { }
 
 
         public List<ResultStruct> ImageRecognitionToFilePath(string _imageFilePath)
@@ -60,11 +60,22 @@ namespace KinectImageConvertSender
         //KinectのDepth,IRのサイズ(固定値)
         int originalImageHeight = 576;
         int originalImageWidth = 640;
+        /*
+            +---------------------- x
+            | 
+            | 
+            | 
+            | 
+            | 
+            | 
+            |
+            y
+         */
         List<ResultStruct> CalculateBoundingBox(IList<CustomVisionBoundingBox> filteredBoundingBoxes)
         {
 
             List<ResultStruct> results = new List<ResultStruct>();
-
+            Form1 form1 = Form1.Form1Instance;
             foreach (var box in filteredBoundingBoxes)
             {
                 // Get Bounding Box Dimensions
@@ -83,7 +94,43 @@ namespace KinectImageConvertSender
                 //認識した座標を出力
                 var posX = x + width / 2;
                 var posY = y + height / 2;
-                results.Add(new ResultStruct(box.Label, posX, posY, box.Confidence));
+
+                float resPosX = posX;
+                float resPosY = posY;
+
+                //Offsetで調整した値を反映
+                //X
+                if (form1.GetLeftOffset != "" && form1.GetRightOffset != "")
+                {
+                    int rightOffset = int.Parse(form1.GetRightOffset);
+                    int leftOffset = int.Parse(form1.GetLeftOffset);
+
+                    if (posX <= leftOffset ||
+                     originalImageHeight - rightOffset <= posX)
+                    {
+                        //右のOffsetの範囲を越していたらresultsに追加しないで終了
+                        continue;
+                    }
+                    //TODO:Offsetでマスクした値を元のサイズに戻す倍率がおかしい
+                    resPosX = (posX - leftOffset) * (float)((float)originalImageWidth / (float)(rightOffset));
+                }
+
+                if (form1.GetTopOffset != "" && form1.GetBottomOffset != "")
+                {
+                    int topOffset = int.Parse(form1.GetTopOffset);
+                    int bottomOffset = int.Parse(form1.GetBottomOffset);
+                    if (posY <= topOffset ||
+                     originalImageHeight - bottomOffset <= posY)
+                    {
+                        //下のOffsetの範囲を越していたらresultsに追加しないで終了
+                        continue;
+                    }
+                    //TODO:Offsetでマスクした値を元のサイズに戻す倍率がおかしい
+                    resPosY = (posY - topOffset) * (float)((float)originalImageHeight / (float)(bottomOffset));
+                }
+
+
+                results.Add(new ResultStruct(box.Label, resPosX, resPosY, box.Confidence));
             }
             return results;
         }

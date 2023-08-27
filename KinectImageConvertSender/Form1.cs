@@ -15,6 +15,49 @@ namespace KinectImageConvertSender
 {
     public partial class Form1 : Form
     {
+        #region 外部のスクリプトで取得用
+        private static Form1 _form1Instance;
+        public static Form1 Form1Instance
+        {
+            get
+            {
+                return _form1Instance;
+            }
+            private set
+            {
+                _form1Instance = value;
+            }
+        }
+        public string GetRightOffset
+        {
+            get
+            {
+                return RightOffset.Text;
+            }
+        }
+        public string GetLeftOffset
+        {
+            get
+            {
+                return LeftOffset.Text;
+            }
+        }
+        public string GetTopOffset
+        {
+            get
+            {
+                return TopOffset.Text;
+            }
+        }
+        public string GetBottomOffset
+        {
+            get
+            {
+                return BottomOffset.Text;
+            }
+        }
+        #endregion
+
         //画像処理関係
         private int _depthDistanceMin = 500;
         private int _depthDistanceMax = 1500;
@@ -52,6 +95,8 @@ namespace KinectImageConvertSender
 
         public Form1()
         {
+            Form1.Form1Instance = this;
+
             //コンポーネントの初期化
             InitializeComponent();
 
@@ -303,7 +348,9 @@ namespace KinectImageConvertSender
             Console.WriteLine("--------------------------");
             foreach (ResultStruct resultStruct in results)
             {
-                Console.WriteLine($"{resultStruct.Label} : {resultStruct.Confidence} : pos {resultStruct.PosX},{resultStruct.PosY}");
+                Console.WriteLine($"{resultStruct.Label} : {resultStruct.Confidence}");
+                Console.WriteLine($"pos x { resultStruct.PosX}");
+                Console.WriteLine($"pos y { resultStruct.PosY}");
             }
             Console.WriteLine("--------------------------");
 
