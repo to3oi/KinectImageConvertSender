@@ -205,8 +205,58 @@ namespace KinectImageConvertSender
                     Mat outDst = new Mat();
                     Cv2.BitwiseAnd(tempDepthMatBit, tempDepthMatBit, outDst, tempIrMatBit);
 
-                    resultBitmapBox.Image = BitmapConverter.ToBitmap(outDst);
 
+
+
+
+                    #endregion
+
+                    #region Offsetを描画する
+
+                    //背景用のbitmap
+                    Bitmap bg_bitmap = BitmapConverter.ToBitmap(outDst);
+
+                    //描画先とするImageオブジェクトを作成する
+                    Bitmap canvas = new Bitmap(bg_bitmap.Width, bg_bitmap.Height);
+                    Graphics g = Graphics.FromImage(canvas);
+
+                    g.DrawImage(bg_bitmap, 0, 0, bg_bitmap.Width, bg_bitmap.Height);
+
+                    //半透明のBrashを作成する
+                    SolidBrush semiTransBrush = new SolidBrush(Color.FromArgb(128, 0, 0, 255));
+
+                    //Left
+                    if (LeftOffset.Text != "")
+                    {
+                        int leftOffset = int.Parse(LeftOffset.Text);
+                        g.FillRectangle(semiTransBrush, 0, 0, leftOffset, bg_bitmap.Height);
+                    }
+
+                    //Right
+                    if (RightOffset.Text != "")
+                    {
+                        int rightOffset = int.Parse(RightOffset.Text);
+                        g.FillRectangle(semiTransBrush, bg_bitmap.Width - rightOffset, 0, rightOffset, bg_bitmap.Height);
+                    }
+                    //Top
+                    if (TopOffset.Text != "")
+                    {
+                        int topOffset = int.Parse(TopOffset.Text);
+                        g.FillRectangle(semiTransBrush, 0, 0, bg_bitmap.Width, topOffset);
+                    }
+                    //Bottom
+                    if (BottomOffset.Text != "")
+                    {
+                        int bottomOffset = int.Parse(BottomOffset.Text);
+                        g.FillRectangle(semiTransBrush, 0, bg_bitmap.Height - bottomOffset, bg_bitmap.Width, bottomOffset);
+                    }
+
+                    bg_bitmap.Dispose();
+                    semiTransBrush.Dispose();
+                    g.Dispose();
+
+                    //表示
+                    resultBitmapBox.Image = canvas;
                     #endregion
 
                     /*                    //デバッグ
