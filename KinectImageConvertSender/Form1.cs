@@ -396,5 +396,20 @@ namespace KinectImageConvertSender
             return deltaTime;
         }
         #endregion
+
+        private void txtNumOnly_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //バックスペースが押された時は有効（Deleteキーも有効）
+            if (e.KeyChar == '\b')
+            {
+                return;
+            }
+
+            //数値0～9以外が押された時はイベントをキャンセルする
+            if ((e.KeyChar < '0' || '9' < e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
     }
 }
