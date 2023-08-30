@@ -28,32 +28,47 @@ namespace KinectImageConvertSender
                 _form1Instance = value;
             }
         }
-        public string GetRightOffset
+        public int GetRightMask
         {
             get
             {
-                return RightMask.Text;
+                return (int)RightMask.Value;
             }
         }
-        public string GetLeftOffset
+        public int GetLeftMask
         {
             get
             {
-                return LeftMask.Text;
+                return (int)LeftMask.Value;
             }
         }
-        public string GetTopOffset
+        public int GetTopMask
         {
             get
             {
-                return TopMask.Text;
+                return (int)TopMask.Value;
             }
         }
-        public string GetBottomOffset
+        public int GetBottomMask
         {
             get
             {
-                return BottomMask.Text;
+                return (int)BottomMask.Value;
+            }
+        }
+
+        public int GetPositionOffsetX
+        {
+            get
+            {
+                return (int)PositionOffsetX.Value;
+            }
+        }
+        public int GetPositionOffsetY
+        {
+            get
+            {
+                return (int)PositionOffsetY.Value;
             }
         }
         #endregion
@@ -496,8 +511,8 @@ namespace KinectImageConvertSender
 
         private void txtNumOnly_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //バックスペースが押された時は有効（Deleteキーも有効）
-            if (e.KeyChar == '\b')
+            //バックスペースと-が押された時は有効（Deleteキーも有効）
+            if (e.KeyChar == '\b' || '-' == e.KeyChar)
             {
                 return;
             }

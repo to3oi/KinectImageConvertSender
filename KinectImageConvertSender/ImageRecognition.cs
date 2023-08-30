@@ -99,34 +99,34 @@ namespace KinectImageConvertSender
                 float resPosY = posY;
 
                 //Maskで調整した値を反映
-                //X
-                if (form1.GetLeftOffset != "" && form1.GetRightOffset != "")
+                // X
+                int rightMask = form1.GetRightMask;
+                int leftMask = form1.GetLeftMask;
+
+                if (posX <= leftMask ||
+                 originalImageWidth - rightMask <= posX)
                 {
-                    int rightMask = int.Parse(form1.GetRightOffset);
-                    int leftMask = int.Parse(form1.GetLeftOffset);
-
-                    if (posX <= leftMask ||
-                     originalImageWidth - rightMask <= posX)
-                    {
-                        //右のOffsetの範囲を越していたらresultsに追加しないで終了
-                        continue;
-                    }
-                    resPosX = (float)(posX - leftMask) * (float)(originalImageWidth / (float)(originalImageWidth - (float)(rightMask + leftMask)));
-
+                    //右のMaskの範囲を越していたらresultsに追加しないで終了
+                    continue;
                 }
+                resPosX = (float)(posX - leftMask) * (float)(originalImageWidth / (float)(originalImageWidth - (float)(rightMask + leftMask)));
 
-                if (form1.GetTopOffset != "" && form1.GetBottomOffset != "")
+
+
+                // Y
+                int topMask = form1.GetTopMask;
+                int bottomMask = form1.GetBottomMask;
+                if (posY <= topMask ||
+                 originalImageHeight - bottomMask <= posY)
                 {
-                    int topMask = int.Parse(form1.GetTopOffset);
-                    int bottomMask = int.Parse(form1.GetBottomOffset);
-                    if (posY <= topMask ||
-                     originalImageHeight - bottomMask <= posY)
-                    {
-                        //下のOffsetの範囲を越していたらresultsに追加しないで終了
-                        continue;
-                    }
-                    resPosY = (float)(posY - topMask) * (float)(originalImageHeight / (float)(originalImageHeight - (float)(topMask + bottomMask)));
+                    //下のMaskの範囲を越していたらresultsに追加しないで終了
+                    continue;
                 }
+                resPosY = (float)(posY - topMask) * (float)(originalImageHeight / (float)(originalImageHeight - (float)(topMask + bottomMask)));
+
+                resPosX = resPosX + form1.GetPositionOffsetX;
+                resPosY = resPosY + form1.GetPositionOffsetY;
+
                 results.Add(new ResultStruct(box.Label, resPosX, resPosY, box.Confidence));
             }
 
