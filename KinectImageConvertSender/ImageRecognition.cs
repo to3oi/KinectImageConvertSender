@@ -1,4 +1,4 @@
-﻿using ObjectDetection.CustomVisionParser;
+using ObjectDetection.CustomVisionParser;
 using ObjectDetection.DataStructures;
 using ObjectDetection;
 using Microsoft.ML;
@@ -106,7 +106,7 @@ namespace KinectImageConvertSender
                     int leftOffset = int.Parse(form1.GetLeftOffset);
 
                     if (posX <= leftOffset ||
-                     originalImageHeight - rightOffset <= posX)
+                     originalImageWidth - rightOffset <= posX)
                     {
                         //右のOffsetの範囲を越していたらresultsに追加しないで終了
                         continue;
