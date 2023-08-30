@@ -256,16 +256,16 @@ namespace KinectImageConvertSender
 
                     #endregion
 
-                    #region Offsetを描画する
+                    #region Maskを描画する
 
                     //背景用のbitmap
                     Bitmap bg_bitmap = BitmapConverter.ToBitmap(outDst);
 
                     //描画先とするImageオブジェクトを作成する
                     Bitmap canvas = new Bitmap(bg_bitmap.Width, bg_bitmap.Height);
-                    Graphics g = Graphics.FromImage(canvas);
+                    Graphics graphics = Graphics.FromImage(canvas);
 
-                    g.DrawImage(bg_bitmap, 0, 0, bg_bitmap.Width, bg_bitmap.Height);
+                    graphics.DrawImage(bg_bitmap, 0, 0, bg_bitmap.Width, bg_bitmap.Height);
 
                     //半透明のBrashを作成する
                     SolidBrush semiTransBrush = new SolidBrush(Color.FromArgb(128, 0, 0, 255));
@@ -273,32 +273,32 @@ namespace KinectImageConvertSender
                     //Left
                     if (LeftMask.Text != "")
                     {
-                        int leftOffset = int.Parse(LeftMask.Text);
-                        g.FillRectangle(semiTransBrush, 0, 0, leftOffset, bg_bitmap.Height);
+                        int leftMask = int.Parse(LeftMask.Text);
+                        graphics.FillRectangle(semiTransBrush, 0, 0, leftMask, bg_bitmap.Height);
                     }
 
                     //Right
                     if (RightMask.Text != "")
                     {
-                        int rightOffset = int.Parse(RightMask.Text);
-                        g.FillRectangle(semiTransBrush, bg_bitmap.Width - rightOffset, 0, rightOffset, bg_bitmap.Height);
+                        int rightMask = int.Parse(RightMask.Text);
+                        graphics.FillRectangle(semiTransBrush, bg_bitmap.Width - rightMask, 0, rightMask, bg_bitmap.Height);
                     }
                     //Top
                     if (TopMask.Text != "")
                     {
-                        int topOffset = int.Parse(TopMask.Text);
-                        g.FillRectangle(semiTransBrush, 0, 0, bg_bitmap.Width, topOffset);
+                        int topMask = int.Parse(TopMask.Text);
+                        graphics.FillRectangle(semiTransBrush, 0, 0, bg_bitmap.Width, topMask);
                     }
                     //Bottom
                     if (BottomMask.Text != "")
                     {
-                        int bottomOffset = int.Parse(BottomMask.Text);
-                        g.FillRectangle(semiTransBrush, 0, bg_bitmap.Height - bottomOffset, bg_bitmap.Width, bottomOffset);
+                        int bottomMask = int.Parse(BottomMask.Text);
+                        graphics.FillRectangle(semiTransBrush, 0, bg_bitmap.Height - bottomMask, bg_bitmap.Width, bottomMask);
                     }
 
                     bg_bitmap.Dispose();
                     semiTransBrush.Dispose();
-                    g.Dispose();
+                    graphics.Dispose();
 
                     //表示
                     resultBitmapBox.Image = canvas;
