@@ -49,21 +49,21 @@ namespace KinectImageConvertSender
             resultBitmapBox = new PictureBox();
             KinectRun = new Button();
             DebugSender = new Button();
-            LeftOffset = new TextBox();
+            LeftMask = new TextBox();
             label9 = new Label();
             label10 = new Label();
-            RightOffset = new TextBox();
-            Offset = new GroupBox();
+            RightMask = new TextBox();
+            Mask = new GroupBox();
             label8 = new Label();
             label11 = new Label();
-            TopOffset = new TextBox();
-            BottomOffset = new TextBox();
+            TopMask = new TextBox();
+            BottomMask = new TextBox();
             PCInfo = new GroupBox();
             SendInfo = new GroupBox();
             ((System.ComponentModel.ISupportInitialize)depthBitmapBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)irBitmapBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)resultBitmapBox).BeginInit();
-            Offset.SuspendLayout();
+            Mask.SuspendLayout();
             PCInfo.SuspendLayout();
             SendInfo.SuspendLayout();
             SuspendLayout();
@@ -270,16 +270,16 @@ namespace KinectImageConvertSender
             DebugSender.UseVisualStyleBackColor = true;
             DebugSender.Click += DebugSender_Click;
             // 
-            // LeftOffset
+            // LeftMask
             // 
-            LeftOffset.ImeMode = ImeMode.Disable;
-            LeftOffset.Location = new Point(7, 69);
-            LeftOffset.Name = "LeftOffset";
-            LeftOffset.ShortcutsEnabled = false;
-            LeftOffset.Size = new Size(45, 23);
-            LeftOffset.TabIndex = 23;
-            LeftOffset.Text = "0";
-            LeftOffset.KeyPress += txtNumOnly_KeyPress;
+            LeftMask.ImeMode = ImeMode.Disable;
+            LeftMask.Location = new Point(7, 69);
+            LeftMask.Name = "LeftMask";
+            LeftMask.ShortcutsEnabled = false;
+            LeftMask.Size = new Size(45, 23);
+            LeftMask.TabIndex = 23;
+            LeftMask.Text = "0";
+            LeftMask.KeyPress += txtNumOnly_KeyPress;
             // 
             // label9
             // 
@@ -299,33 +299,33 @@ namespace KinectImageConvertSender
             label10.TabIndex = 26;
             label10.Text = "Right";
             // 
-            // RightOffset
+            // RightMask
             // 
-            RightOffset.ImeMode = ImeMode.Disable;
-            RightOffset.Location = new Point(105, 69);
-            RightOffset.Name = "RightOffset";
-            RightOffset.ShortcutsEnabled = false;
-            RightOffset.Size = new Size(45, 23);
-            RightOffset.TabIndex = 25;
-            RightOffset.Text = "0";
-            RightOffset.KeyPress += txtNumOnly_KeyPress;
+            RightMask.ImeMode = ImeMode.Disable;
+            RightMask.Location = new Point(105, 69);
+            RightMask.Name = "RightMask";
+            RightMask.ShortcutsEnabled = false;
+            RightMask.Size = new Size(45, 23);
+            RightMask.TabIndex = 25;
+            RightMask.Text = "0";
+            RightMask.KeyPress += txtNumOnly_KeyPress;
             // 
-            // Offset
+            // Mask
             // 
-            Offset.Controls.Add(label8);
-            Offset.Controls.Add(label11);
-            Offset.Controls.Add(TopOffset);
-            Offset.Controls.Add(BottomOffset);
-            Offset.Controls.Add(label9);
-            Offset.Controls.Add(label10);
-            Offset.Controls.Add(LeftOffset);
-            Offset.Controls.Add(RightOffset);
-            Offset.Location = new Point(587, 459);
-            Offset.Name = "Offset";
-            Offset.Size = new Size(172, 162);
-            Offset.TabIndex = 27;
-            Offset.TabStop = false;
-            Offset.Text = "Offset";
+            Mask.Controls.Add(label8);
+            Mask.Controls.Add(label11);
+            Mask.Controls.Add(TopMask);
+            Mask.Controls.Add(BottomMask);
+            Mask.Controls.Add(label9);
+            Mask.Controls.Add(label10);
+            Mask.Controls.Add(LeftMask);
+            Mask.Controls.Add(RightMask);
+            Mask.Location = new Point(587, 459);
+            Mask.Name = "Mask";
+            Mask.Size = new Size(172, 162);
+            Mask.TabIndex = 27;
+            Mask.TabStop = false;
+            Mask.Text = "Mask";
             // 
             // label8
             // 
@@ -345,27 +345,27 @@ namespace KinectImageConvertSender
             label11.TabIndex = 30;
             label11.Text = "Bottom";
             // 
-            // TopOffset
+            // TopMask
             // 
-            TopOffset.ImeMode = ImeMode.Disable;
-            TopOffset.Location = new Point(56, 34);
-            TopOffset.Name = "TopOffset";
-            TopOffset.ShortcutsEnabled = false;
-            TopOffset.Size = new Size(45, 23);
-            TopOffset.TabIndex = 27;
-            TopOffset.Text = "0";
-            TopOffset.KeyPress += txtNumOnly_KeyPress;
+            TopMask.ImeMode = ImeMode.Disable;
+            TopMask.Location = new Point(56, 34);
+            TopMask.Name = "TopMask";
+            TopMask.ShortcutsEnabled = false;
+            TopMask.Size = new Size(45, 23);
+            TopMask.TabIndex = 27;
+            TopMask.Text = "0";
+            TopMask.KeyPress += txtNumOnly_KeyPress;
             // 
-            // BottomOffset
+            // BottomMask
             // 
-            BottomOffset.ImeMode = ImeMode.Disable;
-            BottomOffset.Location = new Point(56, 114);
-            BottomOffset.Name = "BottomOffset";
-            BottomOffset.ShortcutsEnabled = false;
-            BottomOffset.Size = new Size(45, 23);
-            BottomOffset.TabIndex = 29;
-            BottomOffset.Text = "0";
-            BottomOffset.KeyPress += txtNumOnly_KeyPress;
+            BottomMask.ImeMode = ImeMode.Disable;
+            BottomMask.Location = new Point(56, 114);
+            BottomMask.Name = "BottomMask";
+            BottomMask.ShortcutsEnabled = false;
+            BottomMask.Size = new Size(45, 23);
+            BottomMask.TabIndex = 29;
+            BottomMask.Text = "0";
+            BottomMask.KeyPress += txtNumOnly_KeyPress;
             // 
             // PCInfo
             // 
@@ -404,7 +404,7 @@ namespace KinectImageConvertSender
             ClientSize = new Size(778, 890);
             Controls.Add(SendInfo);
             Controls.Add(PCInfo);
-            Controls.Add(Offset);
+            Controls.Add(Mask);
             Controls.Add(DebugSender);
             Controls.Add(KinectRun);
             Controls.Add(label7);
@@ -420,8 +420,8 @@ namespace KinectImageConvertSender
             ((System.ComponentModel.ISupportInitialize)depthBitmapBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)irBitmapBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)resultBitmapBox).EndInit();
-            Offset.ResumeLayout(false);
-            Offset.PerformLayout();
+            Mask.ResumeLayout(false);
+            Mask.PerformLayout();
             PCInfo.ResumeLayout(false);
             PCInfo.PerformLayout();
             SendInfo.ResumeLayout(false);
@@ -453,15 +453,15 @@ namespace KinectImageConvertSender
         private PictureBox resultBitmapBox;
         private Button KinectRun;
         private Button DebugSender;
-        private TextBox LeftOffset;
+        private TextBox LeftMask;
         private Label label9;
         private Label label10;
-        private TextBox RightOffset;
-        private GroupBox Offset;
+        private TextBox RightMask;
+        private GroupBox Mask;
         private Label label8;
         private Label label11;
-        private TextBox TopOffset;
-        private TextBox BottomOffset;
+        private TextBox TopMask;
+        private TextBox BottomMask;
         private GroupBox SendInfo;
     }
 }

@@ -32,28 +32,28 @@ namespace KinectImageConvertSender
         {
             get
             {
-                return RightOffset.Text;
+                return RightMask.Text;
             }
         }
         public string GetLeftOffset
         {
             get
             {
-                return LeftOffset.Text;
+                return LeftMask.Text;
             }
         }
         public string GetTopOffset
         {
             get
             {
-                return TopOffset.Text;
+                return TopMask.Text;
             }
         }
         public string GetBottomOffset
         {
             get
             {
-                return BottomOffset.Text;
+                return BottomMask.Text;
             }
         }
         #endregion
@@ -271,28 +271,28 @@ namespace KinectImageConvertSender
                     SolidBrush semiTransBrush = new SolidBrush(Color.FromArgb(128, 0, 0, 255));
 
                     //Left
-                    if (LeftOffset.Text != "")
+                    if (LeftMask.Text != "")
                     {
-                        int leftOffset = int.Parse(LeftOffset.Text);
+                        int leftOffset = int.Parse(LeftMask.Text);
                         g.FillRectangle(semiTransBrush, 0, 0, leftOffset, bg_bitmap.Height);
                     }
 
                     //Right
-                    if (RightOffset.Text != "")
+                    if (RightMask.Text != "")
                     {
-                        int rightOffset = int.Parse(RightOffset.Text);
+                        int rightOffset = int.Parse(RightMask.Text);
                         g.FillRectangle(semiTransBrush, bg_bitmap.Width - rightOffset, 0, rightOffset, bg_bitmap.Height);
                     }
                     //Top
-                    if (TopOffset.Text != "")
+                    if (TopMask.Text != "")
                     {
-                        int topOffset = int.Parse(TopOffset.Text);
+                        int topOffset = int.Parse(TopMask.Text);
                         g.FillRectangle(semiTransBrush, 0, 0, bg_bitmap.Width, topOffset);
                     }
                     //Bottom
-                    if (BottomOffset.Text != "")
+                    if (BottomMask.Text != "")
                     {
-                        int bottomOffset = int.Parse(BottomOffset.Text);
+                        int bottomOffset = int.Parse(BottomMask.Text);
                         g.FillRectangle(semiTransBrush, 0, bg_bitmap.Height - bottomOffset, bg_bitmap.Width, bottomOffset);
                     }
 
@@ -349,8 +349,8 @@ namespace KinectImageConvertSender
             foreach (ResultStruct resultStruct in results)
             {
                 Console.WriteLine($"{resultStruct.Label} : {resultStruct.Confidence}");
-                Console.WriteLine($"pos x { resultStruct.PosX}");
-                Console.WriteLine($"pos y { resultStruct.PosY}");
+                Console.WriteLine($"pos x {resultStruct.PosX}");
+                Console.WriteLine($"pos y {resultStruct.PosY}");
             }
             Console.WriteLine("--------------------------");
 
