@@ -92,8 +92,8 @@ namespace KinectImageConvertSender
 
 
                 //認識した座標を出力
-                var posX = x + width / 2;
-                var posY = y + height / 2;
+                float posX = x + width / 2;
+                float posY = y + height / 2;
 
                 float resPosX = posX;
                 float resPosY = posY;
@@ -111,8 +111,8 @@ namespace KinectImageConvertSender
                         //右のOffsetの範囲を越していたらresultsに追加しないで終了
                         continue;
                     }
-                    //TODO:Offsetでマスクした値を元のサイズに戻す倍率がおかしい
-                    resPosX = (posX - leftOffset) * (float)((float)originalImageWidth / (float)(rightOffset));
+                    resPosX = (float)(posX - leftOffset) * (float)(originalImageWidth / (float)(originalImageWidth - (float)(rightOffset + leftOffset)));
+
                 }
 
                 if (form1.GetTopOffset != "" && form1.GetBottomOffset != "")
@@ -125,13 +125,11 @@ namespace KinectImageConvertSender
                         //下のOffsetの範囲を越していたらresultsに追加しないで終了
                         continue;
                     }
-                    //TODO:Offsetでマスクした値を元のサイズに戻す倍率がおかしい
-                    resPosY = (posY - topOffset) * (float)((float)originalImageHeight / (float)(bottomOffset));
+                    resPosY = (float)(posY - topOffset) * (float)(originalImageHeight / (float)(originalImageHeight - (float)(topOffset + bottomOffset)));
                 }
-
-
                 results.Add(new ResultStruct(box.Label, resPosX, resPosY, box.Confidence));
             }
+
             return results;
         }
     }

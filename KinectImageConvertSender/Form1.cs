@@ -468,7 +468,7 @@ namespace KinectImageConvertSender
 
 
                     List<ResultStruct> results = new List<ResultStruct>(){
-                    new ResultStruct{ Label = "Cane", PosX = (int)Math.Round(dx), PosY = (int)Math.Round(dy), Confidence = 0.8f }
+                    new ResultStruct{ Label = "Cross", PosX = (int)Math.Round(dx), PosY = (int)Math.Round(dy), Confidence = 0.8f }
                     };
 
 
