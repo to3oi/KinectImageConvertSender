@@ -373,6 +373,7 @@ namespace KinectImageConvertSender
             if (_isUDPSend)
             {
                 byte[] serializedData = MessagePackSerializer.Serialize(results);
+                //座標の最大値 640 x 576 で送信する
                 UDPSender.Send(serializedData);
             }
         }
