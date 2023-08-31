@@ -95,8 +95,8 @@ namespace KinectImageConvertSender
                 uint posX = x + width / 2;
                 uint posY = y + height / 2;
 
-                uint resPosX = posX;
-                uint resPosY = posY;
+                double resPosX = posX;
+                double resPosY = posY;
 
                 //Maskで調整した値を反映
                 // X
@@ -109,7 +109,7 @@ namespace KinectImageConvertSender
                     //右のMaskの範囲を越していたらresultsに追加しないで終了
                     continue;
                 }
-                resPosX = (uint )(posX - leftMask) * (uint )(originalImageWidth / (uint )(originalImageWidth - (uint )(rightMask + leftMask)));
+                resPosX = (double)(posX - leftMask) * (double)(originalImageWidth / (double)(originalImageWidth - (double)(rightMask + leftMask)));
 
 
 
@@ -122,12 +122,12 @@ namespace KinectImageConvertSender
                     //下のMaskの範囲を越していたらresultsに追加しないで終了
                     continue;
                 }
-                resPosY = (uint )(posY - topMask) * (uint )(originalImageHeight / (uint )(originalImageHeight - (uint )(topMask + bottomMask)));
+                resPosY = (double)(posY - topMask) * (double)(originalImageHeight / (double)(originalImageHeight - (double)(topMask + bottomMask)));
 
                 resPosX = resPosX + form1.GetPositionOffsetX;
                 resPosY = resPosY + form1.GetPositionOffsetY;
 
-                results.Add(new ResultStruct(box.Label, resPosX, resPosY, box.Confidence));
+                results.Add(new ResultStruct(box.Label, (float)resPosX, (float)resPosY, box.Confidence));
             }
 
             return results;
