@@ -57,18 +57,18 @@ namespace KinectImageConvertSender
             }
         }
 
-        public int GetPositionOffsetX
+        public uint GetPositionOffsetX
         {
             get
             {
-                return (int)PositionOffsetX.Value;
+                return (uint)PositionOffsetX.Value;
             }
         }
-        public int GetPositionOffsetY
+        public uint GetPositionOffsetY
         {
             get
             {
-                return (int)PositionOffsetY.Value;
+                return (uint)PositionOffsetY.Value;
             }
         }
         #endregion
