@@ -127,6 +127,10 @@ namespace KinectImageConvertSender
                 resPosX = resPosX + form1.GetPositionOffsetX;
                 resPosY = resPosY + form1.GetPositionOffsetY;
 
+                //UnityのXY軸に補正する
+
+                resPosY = Math.Abs(resPosY - originalImageHeight);
+
                 results.Add(new ResultStruct(box.Label, (float)resPosX, (float)resPosY, box.Confidence));
             }
 
