@@ -501,6 +501,7 @@ namespace KinectImageConvertSender
             Name = "Form1";
             Text = "KinectViewAndUDPSender";
             FormClosing += Form1_FormClosing;
+            Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)depthBitmapBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)irBitmapBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)resultBitmapBox).EndInit();

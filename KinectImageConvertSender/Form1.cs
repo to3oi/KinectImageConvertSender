@@ -114,7 +114,7 @@ namespace KinectImageConvertSender
 
             //コンポーネントの初期化
             InitializeComponent();
-
+            this.FormClosing += Form1_FormClosing;
             //デバッグ用
             AllocConsole();
             //IPv4のアドレスを取得して表示
@@ -404,11 +404,34 @@ namespace KinectImageConvertSender
                 CameraFPS = FPS.FPS30
             });
         }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //値を読み込み
+            TopMask.Text = Properties.Settings.Default.TopMask.ToString();
+            BottomMask.Text = Properties.Settings.Default.BottomMask.ToString();
+            LeftMask.Text = Properties.Settings.Default.LeftMask.ToString();
+            RightMask.Text = Properties.Settings.Default.RightMask.ToString();
+            PositionOffsetX.Text = Properties.Settings.Default.PositionOffsetX.ToString();
+            PositionOffsetY.Text = Properties.Settings.Default.PositionOffsetY.ToString();
+            GetConnectIP.Text = Properties.Settings.Default.GetConnectIP;
+        }
 
         //アプリ終了時にKinect終了
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             loop = false;
+
+            //値を保存
+            Properties.Settings.Default.TopMask = int.Parse(TopMask.Text);
+            Properties.Settings.Default.BottomMask = int.Parse(BottomMask.Text);
+            Properties.Settings.Default.LeftMask = int.Parse(LeftMask.Text);
+            Properties.Settings.Default.RightMask = int.Parse(RightMask.Text);
+            Properties.Settings.Default.PositionOffsetX = double.Parse(PositionOffsetX.Text);
+            Properties.Settings.Default.PositionOffsetY = double.Parse(PositionOffsetY.Text);
+            Properties.Settings.Default.GetConnectIP = GetConnectIP.Text;
+
+            Properties.Settings.Default.Save();
+
         }
 
         //UPDの接続を開始する
